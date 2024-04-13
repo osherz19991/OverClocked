@@ -1,9 +1,10 @@
 # OverClocked
 
-**Full stack MERN eCommerce web application. Work in progress**
+**Full stack eCommerce website for tech products. Work in progress**
 
 ## Architecture:
-![mern-stack-b9q1kbudz0](https://github.com/AlonKigelman/OverClocked_eCommerce/assets/72994068/ec3a35a4-98b4-42d8-b4e0-0136a65114ec)
+![mern-stack4](https://github.com/AlonKigelman/OverClocked_eCommerce/assets/72994068/f3ab245a-fd0d-4e02-9167-4d073e3e3718)
+
 
 ## Use case diagram:
-![US](https://github.com/AlonKigelman/OverClocked_eCommerce/assets/72994068/e3d1c695-ebeb-4cf3-9fe1-b4bcc47ea8b7)
+![Untitled](https://github.com/AlonKigelman/OverClocked_eCommerce/assets/72994068/ba44113b-7b74-4e1c-8352-431e6783f427)
