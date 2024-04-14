@@ -7,4 +7,7 @@
 
 
 ## Use case diagram:
-![Untitled](https://github.com/AlonKigelman/OverClocked_eCommerce/assets/72994068/ba44113b-7b74-4e1c-8352-431e6783f427)
+
+
+
+![Untitled (4)](https://github.com/AlonKigelman/OverClocked_eCommerce/assets/72994068/3f71152f-1caf-463c-9da3-3f1bc91ebe26)
