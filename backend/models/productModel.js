@@ -9,13 +9,12 @@ comment: { type: String, required: true },
 
 
 const productSchema = new mongoose.Schema({
-    _id: { type: String, required: true },
-  asin: { type: String, required: true },
+   asin: { type: String, required: true },
   title: { type: String, required: true },
   imgUrl: { type: String, required: true },
   productURL: { type: String, required: true },
   stars: { type: String, required: true, default: "0"},
-  reviews: { type: [reviewSchema], required: true },
+  reviews: { type: [], required: true },
   price: { type: String, required: true },
   listPrice: { type: String, required: true },
   category_id: { type: String, required: true },
