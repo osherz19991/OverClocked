@@ -1,23 +1,33 @@
 import express from 'express';
+import { connectDB } from '../config/db.js';
+import { ObjectId } from 'mongodb';
+
 const router = express.Router();
+const productsCollectionName = 'Products';
 
-// Import any necessary middleware or dependencies
+// GET route to fetch all products
+router.get('/', async (req, res) => {
+  try {
+    const db = await connectDB();
+    const products = await db.collection(productsCollectionName).find({}).toArray();
+    console.log('Fetched products:', products);
+    res.json(products);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
-const productRoutes = (db) => {
-  // GET route to fetch all products
-  router.get('/', async (req, res) => {
-    try {
-      const products = await db.collection('Products').find().toArray();
-      res.json(products);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  });
 
-  // Add more routes for other CRUD operations if needed
-
-  return router;
-};
-
-export default productRoutes;
+router.get('/:id', async (req, res) => {
+  try {
+    const db = await connectDB();
+    const product = await db.collection(productsCollectionName).findOne({ _id: new ObjectId(req.params.id) });
+    console.log('Fetched product:', product);
+    res.json(product);
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+export default router;
