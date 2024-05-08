@@ -9,7 +9,7 @@ comment: { type: String, required: true },
 
 
 const productSchema = new mongoose.Schema({
-   asin: { type: String, required: true },
+  asin: { type: String, required: true },
   title: { type: String, required: true },
   imgUrl: { type: String, required: true },
   productURL: { type: String, required: true },
@@ -20,6 +20,7 @@ const productSchema = new mongoose.Schema({
   category_id: { type: String, required: true },
   countInStock: { type: Number, required: true },
   numReviews: { type: Number, required: true },
+  category: { type: String, required: true}
   });
 
   const Product = mongoose.model("Product", productSchema, "Products");

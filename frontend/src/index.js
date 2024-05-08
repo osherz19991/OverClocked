@@ -10,9 +10,14 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 import HomeScreen from './Screens/HomeScreen';
 import ProductScreen from './Screens/ProductScreen';
+import SignUpScreen from './Screens/SignupScreen';
+import SigninScreen from './Screens/SigninScreen';
+import UserPage from './Screens/UserPage';
+import CartScreen from './Screens/CartScreen';
+import CheckoutScreen from './Screens/CheckoutScreen';
+import reportWebVitals from './reportWebVitals';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,6 +25,12 @@ const router = createBrowserRouter(
     <Route path ="/" element = {<App />}>
     <Route index={true} path="/" element={<HomeScreen/>} />
     <Route path="/product/:id" element={<ProductScreen/>} />
+    <Route path="/signup" element={<SignUpScreen/>} />
+    <Route path="/signin" element={<SigninScreen/>} />
+    <Route path="/userInfo" element={<UserPage/>} />
+    <Route path="/cart" element={<CartScreen/>} />
+    <Route path="/checkout" element={<CheckoutScreen/>} />
+
     </Route>
   )
 )

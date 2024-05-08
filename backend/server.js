@@ -41,11 +41,21 @@
 // });
 
 
+// server.js
+
+// server.js
+
 import express from 'express';
 import productRoutes from './routes/productRoutes.js';
+import signupRoutes from './routes/signupRoutes.js'; // Import the signup routes
+import signinRoutes from './routes/signinRoutes.js';
+import userInfoRoutes from './routes/userInfoRoutes.js';
+import cartRoutes from './routes/cartRoutes.js';
 
 const app = express();
 const port = process.env.PORT || 5000;
+
+app.use(express.json()); // Parse JSON bodies
 
 app.get('/', (req, res) => {
   res.send('API is running...');
@@ -53,6 +63,25 @@ app.get('/', (req, res) => {
 
 // Use productRoutes for '/api/products' endpoint
 app.use('/api/products', productRoutes);
+
+// Use signupRoutes for '/api/signup' endpoint
+app.use('/api/signup', signupRoutes);
+
+// Use signinRoutes for '/api/signin' endpoint
+app.use('/api/signin', signinRoutes);
+
+// Use UserInfoRoutes for '/api/UserInfo' endpoint
+app.use('/api/userInfo', userInfoRoutes);
+
+// Use UserInfoRoutes for '/api/userInfo/logout' endpoint
+app.use('/api/userInfo/logout', userInfoRoutes);
+
+// Use UserInfoRoutes for '/api/userInfo/sendPassword' endpoint
+app.use('/api/userInfo/sendPassword', userInfoRoutes);
+
+app.use('/api/cart', cartRoutes);
+
+app.use('/api/cart/add', cartRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
