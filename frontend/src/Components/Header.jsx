@@ -33,19 +33,21 @@ const Header = () => {
         <Container>
           <LinkContainer to="/">
             <Navbar.Brand>
+              <img
+                src={'/images/logo.png'} alt="OverClocked Logo" style={{ marginBottom: '10px' }} />
               OverClocked
             </Navbar.Brand>
           </LinkContainer>
-        
+
           <Form onSubmit={handleSearchSubmit} className="mb-0">
             <Row className="align-items-center">
               <Col xs={8} md={9}>
-                <Form.Group controlId="search" className="mb-1" style={{width: '55vw'}}>
-                  <Form.Control 
-                    type="text" 
-                    placeholder="Search Products" 
-                    value={searchInput} 
-                    onChange={handleSearchInputChange} 
+                <Form.Group controlId="search" className="mb-1" style={{ width: '55vw' }}>
+                  <Form.Control
+                    type="text"
+                    placeholder="Search Products"
+                    value={searchInput}
+                    onChange={handleSearchInputChange}
                   />
                 </Form.Group>
               </Col>

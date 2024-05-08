@@ -1,44 +1,63 @@
-import React from 'react';
-import { Card, Row, Col } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Carousel, Row, Col, Button, ButtonGroup } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const GamingCategories = () => {
+  const [index, setIndex] = useState(0);
+
+  const handleSelect = (selectedIndex, e) => {
+    setIndex(selectedIndex);
+  };
+
   return (
-    <div>
-      <h2>Gaming Categories</h2>
-      <Row>
-        <Col sm={6} md={3}>
-          <Card>
-            <Card.Img variant="top" src="/images/headset.jpg" />
-            <Card.Body>
-              <Card.Title>Headset</Card.Title>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col sm={6} md={3}>
-          <Card>
-            <Card.Img variant="top" src="/images/logo.png" />
-            <Card.Body>
-              <Card.Title>Keyboard</Card.Title>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col sm={6} md={3}>
-          <Card>
-            <Card.Img variant="top" src="/images/category3.jpg" />
-            <Card.Body>
-              <Card.Title>Racing</Card.Title>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col sm={6} md={3}>
-          <Card>
-            <Card.Img variant="top" src="/images/category4.jpg" />
-            <Card.Body>
-              <Card.Title>Strategy</Card.Title>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+    <div style={{ width: '80%', margin: 'auto' }}>
+      <h2 style={{ textAlign: 'center', marginBottom: '30px' }}>Gaming Categories</h2>
+      <Carousel activeIndex={index} onSelect={handleSelect} interval={null} indicators={false}>
+        <Carousel.Item>
+          <Row className="justify-content-center">
+            <Col md={6} lg={5}>
+              <Link to="/?search=headsets">
+                <div className="category-item d-flex justify-content-center align-items-center">
+                  <img className="d-block w-150" style={{ height: '400px' }} src="/images/headset.jpg" alt="Headset" />
+                </div>
+              </Link>
+            </Col>
+          </Row>
+        </Carousel.Item>
+        <Carousel.Item>
+          <Row className="justify-content-center">
+            <Col md={6} lg={5}>
+              <Link to="/?search=keyboard">
+                <div className="category-item d-flex justify-content-center align-items-center">
+                  <img className="d-block w-150" style={{ height: '400px' }} src="/images/keyboard.jpg" alt="Keyboard" />
+                </div>
+              </Link>
+            </Col>
+          </Row>
+        </Carousel.Item>
+        <Carousel.Item>
+          <Row className="justify-content-center">
+            <Col md={6} lg={5}>
+              <Link to="/?search=Graphics%20Card">
+                <div className="category-item d-flex justify-content-center align-items-center">
+                  <img className="d-block w-150" style={{ height: '400px' }} src="/images/GraphicsCard.jpg" alt="Graphics Card" />
+                </div>
+              </Link>
+            </Col>
+          </Row>
+        </Carousel.Item>
+        <Carousel.Item>
+          <Row className="justify-content-center">
+            <Col md={6} lg={5}>
+              <Link to="/?search=MotherBoard">
+                <div className="category-item d-flex justify-content-center align-items-center">
+                  <img className="d-block w-150" style={{ height: '400px' }} src="/images/MotherBoard.jpg" alt="Motherboard" />
+                </div>
+              </Link>
+            </Col>
+          </Row>
+        </Carousel.Item>
+      </Carousel>
     </div>
   );
 };
