@@ -44,45 +44,43 @@
 // server.js
 
 // server.js
+// server.js
 
 import express from 'express';
 import productRoutes from './routes/productRoutes.js';
-import signupRoutes from './routes/signupRoutes.js'; // Import the signup routes
+import signupRoutes from './routes/signupRoutes.js';
 import signinRoutes from './routes/signinRoutes.js';
 import userInfoRoutes from './routes/userInfoRoutes.js';
 import cartRoutes from './routes/cartRoutes.js';
+import { connectDB } from './config/db.js';
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(express.json()); // Parse JSON bodies
+app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
 
-// Use productRoutes for '/api/products' endpoint
-app.use('/api/products', productRoutes);
+connectDB()
+  .then(db => {
+    app.locals.db = db;
 
-// Use signupRoutes for '/api/signup' endpoint
-app.use('/api/signup', signupRoutes);
+    app.use('/api/products', productRoutes);
+    app.use('/api/signup', signupRoutes);
+    app.use('/api/signin', signinRoutes);
+    app.use('/api/userInfo', userInfoRoutes);
+    app.use('/api/userInfo/logout', userInfoRoutes);
+    app.use('/api/userInfo/sendPassword', userInfoRoutes);
+    app.use('/api/cart', cartRoutes);
+    app.use('/api/cart/add', cartRoutes);
 
-// Use signinRoutes for '/api/signin' endpoint
-app.use('/api/signin', signinRoutes);
-
-// Use UserInfoRoutes for '/api/UserInfo' endpoint
-app.use('/api/userInfo', userInfoRoutes);
-
-// Use UserInfoRoutes for '/api/userInfo/logout' endpoint
-app.use('/api/userInfo/logout', userInfoRoutes);
-
-// Use UserInfoRoutes for '/api/userInfo/sendPassword' endpoint
-app.use('/api/userInfo/sendPassword', userInfoRoutes);
-
-app.use('/api/cart', cartRoutes);
-
-app.use('/api/cart/add', cartRoutes);
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+  })
+  .catch(error => {
+    console.error('Failed to connect to the database:', error);
+    process.exit(1);
+  });

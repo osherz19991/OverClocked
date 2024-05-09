@@ -1,3 +1,5 @@
+// config/db.js
+
 import { MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
 
@@ -16,3 +18,4 @@ export const connectDB = async () => {
     throw error;
   }
 };
+
