@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
     const accountsCollectionName = 'accounts';
 
     
-    const account = await db.collection(accountsCollectionName).findOne({  $or: [{ email: identifier,password }, { username: identifier,password }]});
+    const account = await db.collection(accountsCollectionName).findOne({  $or: [{ mail: identifier,password }, { username: identifier,password }]});
     
     if (!account) {
         return res.status(401).json({ error: 'Invalid username or password' });

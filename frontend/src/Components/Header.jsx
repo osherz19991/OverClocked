@@ -31,18 +31,20 @@ const Header = () => {
     <header>
       <Navbar className="custom-navbar" bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
-          <LinkContainer to="/">
-            <Navbar.Brand>
-              <img
-                src={'/images/logo.png'} alt="OverClocked Logo" style={{ marginBottom: '10px' }} />
-              OverClocked
-            </Navbar.Brand>
-          </LinkContainer>
+          <Navbar.Brand>
+            <LinkContainer to="/">
+              <div>
+                <img
+                  src={'/images/logo.png'} alt="OverClocked Logo" style={{ marginBottom: '10px' }} />
+                OverClocked
+              </div>
+            </LinkContainer>
+          </Navbar.Brand>
 
           <Form onSubmit={handleSearchSubmit} className="mb-0">
             <Row className="align-items-center">
               <Col xs={8} md={9}>
-                <Form.Group controlId="search" className="mb-1" style={{ width: '55vw' }}>
+                <Form.Group controlId="search" className="mb-1" style={{ width: '38vw' }}>
                   <Form.Control
                     type="text"
                     placeholder="Search Products"
@@ -51,7 +53,7 @@ const Header = () => {
                   />
                 </Form.Group>
               </Col>
-              <Col xs={4} md={3} className="d-flex align-items-center justify-content-end">
+              <Col xs={4} md={3} className="d-flex align-items-center justify-content-end" style={{ width: '10vw' }}>
                 <Button type="submit" variant="primary">
                   Search
                 </Button>
@@ -61,14 +63,14 @@ const Header = () => {
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto">
+            <Nav className="ms-auto" style={{ width: '10vw' }}>
               <LinkContainer to="/cart">
                 <Nav.Link>
                   <FaShoppingCart /> Cart
                 </Nav.Link>
               </LinkContainer>
               {username ? (
-                <Nav.Link onClick={handleUserClick}>
+                <Nav.Link onClick={handleUserClick} style={{ width: '10vw' }}>
                   <FaUser /> {username}
                 </Nav.Link>
               ) : (
@@ -85,5 +87,6 @@ const Header = () => {
     </header>
   );
 };
+
 
 export default Header;

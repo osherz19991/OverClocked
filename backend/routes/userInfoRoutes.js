@@ -10,15 +10,15 @@ const router = express.Router();
 router.post('/', async (req, res) => {
   try {
     // Extract user data from request body
-    const { identifier, password } = req.body;
+    const { username } = req.body;
     const db = await connectDB();
     const accountsCollectionName = 'accounts';
-    const account = await db.collection(accountsCollectionName).findOne({  $or: [{ email: identifier }, { username: identifier }]});
-    if (!account) {
+    const account = await db.collection(accountsCollectionName).findOne({  $or: [{ email: username }, { username: username }]});
+    if (!account)
         return res.status(401).json({ error: 'Invalid username or password' });
-    }    
-  
-    res.json({username: account.username, mail: account.mail, password: account.password});
+    else
+      res.json({username: account.username, mail: account.mail, password: account.password});
+
 
   } catch (error) {
     console.error('Error during sign-in:', error);
@@ -30,11 +30,8 @@ router.post('/sendPassword', async (req, res) => {
   try {
     const { identifier, username } = req.body;
     const db = await connectDB();
-    console.log(identifier);
     const accountsCollectionName = 'accounts';
-    console.log("5");
     const account = await db.collection(accountsCollectionName).findOne({  $or: [{ mail: identifier }, { username: username }]});
-    console.log(account.mail);
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         host: 'smtp.gmail.com',

@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Row, Col, Image, ListGroup, Button, Card, Form, Carousel } from 'react-bootstrap';
 import Rating from '../Components/Rating';
 import { Product } from '../Components/Product';
+import Review from '../Components/Review';
 import axios from 'axios';
 
 const ProductScreen = () => {
@@ -12,42 +13,70 @@ const ProductScreen = () => {
   const [message, setMessage] = useState('');
   const { id: productId } = useParams();
   const [products, setProducts] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [reviewText, setReviewText] = useState('');
+
+  const fetchReviews = async () => {
+    try {
+      const { data } = await axios.get(`/api/products/${productId}/reviews`);
+      setReviews(data);
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+    }
+  };
+
+  const fetchProduct = async () => {
+    try {
+      const { data } = await axios.get(`/api/products/${productId}`);
+      setProduct(data);
+    } catch (error) {
+      console.error('Error fetching product:', error);
+    }
+  };
+
+  const fetchProducts = async () => {
+    try {
+      const { data } = await axios.get(`/api/products?search=${product.Category}`);
+      if (product.Category === "other")
+        data = await axios.get(`/api/products?search=${product.title}`);
+      setProducts(data.products);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
 
   useEffect(() => {
     setUsername(localStorage.getItem('username'));
-    const fetchProduct = async () => {
-      const { data } = await axios.get(`/api/products/${productId}`);
-      setProduct(data);
-    };
-
     fetchProduct();
-    if (product) {
+    fetchReviews();
+  }, [productId]);
 
-      const fetchProducts = async () => {
-
-        try {
-          const { data } = await axios.get(`/api/products?search=${product.Category}`);
-          if (product.Category == "other")
-            data = await axios.get(`/api/products?search=${Product.title}`);
-          console.log(data.products);
-          setProducts(data.products);
-        } catch (error) {
-          console.error('Error fetching products:', error);
-        }
-      };
-
+  useEffect(() => {
+    if (product && product.Category) {
       fetchProducts();
     }
-  }, [productId]);
+  }, [product]);
+
+
   const addToCartHandler = async () => {
     try {
       setMessage('Product added to cart successfully');
       updateCartInLocalStorage(product, quantity);
+
+      // Calculate the updated quantity
+      const updatedQuantity = product.quantity - quantity;
+
+      // Send a PUT request to update the product quantity
+      await axios.put(`/api/products/${productId}/updateQuantity`, { quantity: updatedQuantity });
+
+      // After updating the quantity, fetch the product again to reflect the changes
+      fetchProduct();
     } catch (error) {
       console.error('Error adding product to cart:', error);
       setMessage('Failed to add product to cart');
     }
   };
+
 
   const updateCartInLocalStorage = (product, quantity) => {
     const cartItems = getCartFromLocalStorage();
@@ -64,7 +93,20 @@ const ProductScreen = () => {
     setQuantity(Number(e.target.value));
   };
 
-
+  const addReviewHandler = async () => {
+    try {
+      // Make a POST request to add the review
+      await axios.post(`/api/products/${productId}/reviews`, { text: reviewText });
+      // Fetch the updated list of reviews for the product
+      const { data } = await axios.get(`/api/products/${productId}/reviews`);
+      // Update the reviews state with the new list of reviews
+      setReviews(data);
+      // Clear the review text field
+      setReviewText('');
+    } catch (error) {
+      console.error('Error adding review:', error);
+    }
+  };
 
   return (
     <>
@@ -123,17 +165,18 @@ const ProductScreen = () => {
                   </Row>
                 </ListGroup.Item>
               )}
-              {product.quantity > 0 &&(
-              <ListGroup.Item>
-                <Button
-                  className='btn-block'
-                  type='button'
-                  disabled={product.quantity === 0}
-                  onClick={addToCartHandler}
-                >
-                  Add to Cart
-                </Button>
-              </ListGroup.Item>
+              {product.quantity > 0 && (
+                <ListGroup.Item>
+                  <Button
+                    className='btn-block'
+                    type='button'
+                    disabled={product.quantity === 0}
+                    onClick={addToCartHandler}
+                  >
+                    Add to Cart
+                  </Button>
+                  {message && <p>{message}</p>}
+                </ListGroup.Item>
               )}
             </ListGroup>
           </Card>
@@ -145,7 +188,10 @@ const ProductScreen = () => {
           {products.length === 0 ? (
             <p>No related products available</p>
           ) : (
-            <Carousel indicators={false} prevLabel={<span style={{ color: 'blue', marginRight: '150px' }}>&#10094;</span>} nextLabel={<span style={{ color: 'red' }}>&#10095;</span>}>
+            <Carousel
+              indicators={false}
+              prevLabel={<span style={{ color: 'black', marginRight: '10px' }}>&#10094;</span>}
+              nextLabel={<span style={{ color: 'black' }}>&#10095;</span>}>
               {products.map((relatedProduct, index) => {
                 if (index % 4 === 0) {
                   return (
@@ -167,7 +213,36 @@ const ProductScreen = () => {
           )}
         </Col>
       </Row>
-
+      <Row>
+        <Col md={12}>
+          <h3>Customer Reviews</h3>
+          {/* Review form */}
+          <Form onSubmit={addReviewHandler}>
+            <Form.Group controlId='review'>
+              <Form.Label>Write a Review</Form.Label>
+              <Form.Control
+                as='textarea'
+                rows={3}
+                value={reviewText}
+                onChange={(e) => setReviewText(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <Button type='submit' variant='primary'>
+              Submit Review
+            </Button>
+          </Form>
+          <ListGroup variant='flush'>
+            {reviews.map((review, index) => (
+              <ListGroup.Item key={index}>
+                <strong>{review.user}</strong>
+                <Rating value={review.rating} />
+                <p>{review.text}</p>
+                <p>{review.createdAt?.substring(0, 10)}</p>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        </Col>
+      </Row>
     </>
   );
 };

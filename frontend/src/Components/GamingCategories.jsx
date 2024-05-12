@@ -12,7 +12,7 @@ const GamingCategories = () => {
   return (
     <div style={{ width: '80%', margin: 'auto' }}>
       <h2 style={{ textAlign: 'center', marginBottom: '30px' }}>Gaming Categories</h2>
-      <Carousel activeIndex={index} onSelect={handleSelect} interval={null} indicators={false}>
+      <Carousel activeIndex={index} onSelect={handleSelect} interval={null} indicators={true}>
         <Carousel.Item>
           <Row className="justify-content-center">
             <Col md={6} lg={5}>

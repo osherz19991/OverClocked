@@ -15,22 +15,18 @@ const SigninScreen = () => {
     try {
       // Make a POST request to the sign-in endpoint
       const response = await axios.post('/api/signin', {
-        email: email,
+        identifier: email,
         password: password,
       });
-
       console.log('User signed in successfully:', response.data);
 
       // Fetch the username after successful sign-in
       const username = response.data.username;
-      console.log(response);
-      console.log(response.data);
-
-      console.log(username);
       // Store the username in local storage
       localStorage.setItem('username', username);
 
       navigate('/');
+
       navigate(0);
     } catch (error) {
       console.error('Error signing in:', error.response.data);

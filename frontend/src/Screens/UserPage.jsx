@@ -4,18 +4,18 @@ import React, { useEffect, useState } from 'react';
 import {useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const UserPage = ({ username }) => {
+const UserPage = () => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const username = localStorage.getItem('username');
 
   useEffect(() => {
     // Fetch user data from the backend API
     const fetchUserData = async () => {
       try {
         const response = await axios.post('/api/userInfo', { username }); // Pass the username to the server
-        console.log(response.data);
         setUserData(response.data);
       } catch (error) {
         setError('Error fetching user data');
@@ -23,7 +23,7 @@ const UserPage = ({ username }) => {
     };
 
     fetchUserData();
-  }, [username]); // Add username to the dependency array
+  },); // Add username to the dependency array
 
   const handleSendPassword = async () => {
     try {

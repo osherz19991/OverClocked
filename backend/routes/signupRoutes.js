@@ -15,7 +15,6 @@ router.post('/', async (req, res) => {
     const { name, password, email } = req.body;
     const mail = email;
     const username = name;
-    console.log(req.body)
     const db = await connectDB();
     const accountsCollectionName = 'accounts';
     const existingAccount = await db.collection(accountsCollectionName).findOne({ username });

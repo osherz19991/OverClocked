@@ -68,6 +68,8 @@ connectDB()
     app.locals.db = db;
 
     app.use('/api/products', productRoutes);
+    app.use('/api/products/${productId}/updateQuantity', productRoutes);
+    app.use('/api/products/${productId}/reviews',productRoutes);
     app.use('/api/signup', signupRoutes);
     app.use('/api/signin', signinRoutes);
     app.use('/api/userInfo', userInfoRoutes);
