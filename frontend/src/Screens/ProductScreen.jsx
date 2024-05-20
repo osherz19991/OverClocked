@@ -5,6 +5,7 @@ import Rating from '../Components/Rating';
 import { Product } from '../Components/Product';
 import Review from '../Components/Review';
 import axios from 'axios';
+import { BsChevronRight, BsChevronLeft } from 'react-icons/bs'; // Import icons for next and previous arrows
 
 const ProductScreen = () => {
   const [username, setUsername] = useState('');
@@ -189,27 +190,32 @@ const ProductScreen = () => {
             <p>No related products available</p>
           ) : (
             <Carousel
-              indicators={false}
-              prevLabel={<span style={{ color: 'black', marginRight: '10px' }}>&#10094;</span>}
-              nextLabel={<span style={{ color: 'black' }}>&#10095;</span>}>
-              {products.map((relatedProduct, index) => {
-                if (index % 4 === 0) {
-                  return (
-                    <Carousel.Item key={index}>
-                      <Row>
-                        {products.slice(index, index + 4).map((product) => (
-                          <Col sm={12} md={6} lg={3} key={product._id}>
-                            <Product product={product} />
-                          </Col>
-                        ))}
-                      </Row>
-                    </Carousel.Item>
-                  );
-                } else {
-                  return null;
-                }
-              })}
-            </Carousel>
+            variant="dark"
+            indicators={false}
+            nextIcon={<BsChevronRight style={{ position: 'absolute', right: '5%', top: '50%', transform: 'translateY(-50%)' }} />}
+            prevIcon={<BsChevronLeft style={{ position: 'absolute', left: '5%', top: '50%', transform: 'translateY(-50%)' }} />}
+          >
+            {Array.from({ length: Math.ceil(products.length / 5) }).map((_, index) => (
+              <Carousel.Item key={index}>
+                <Row>
+                  {products.slice(index * 5, index * 5 + 5).map((product) => (
+                    <Col key={product._id}>
+                      <Card className="my-3 p-3 rounded" style={{ position: 'relative', height: '300px', maxWidth: '250px' }}>
+                        <Link to={`/product/${product._id}`}>
+                          <Card.Img src={product.imgUrl} variant='left' style={{ maxWidth: '100%', maxHeight: '100px' }} />
+                        </Link>
+                        <Card.Body>
+                          <Link to={`/product/${product._id}`}>
+                            <Card.Title as='div'><strong>{product.title && product.title.substring(0, 40)}</strong></Card.Title>
+                          </Link>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  ))}
+                </Row>
+              </Carousel.Item>
+            ))}
+          </Carousel>
           )}
         </Col>
       </Row>

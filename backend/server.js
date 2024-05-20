@@ -52,6 +52,8 @@ import signupRoutes from './routes/signupRoutes.js';
 import signinRoutes from './routes/signinRoutes.js';
 import userInfoRoutes from './routes/userInfoRoutes.js';
 import cartRoutes from './routes/cartRoutes.js';
+import orderHistoryRoutes from './routes/orderHistoryRoutes.js'
+import checkoutRoutes from './routes/checkoutRoutes.js'
 import { connectDB } from './config/db.js';
 
 const app = express();
@@ -77,6 +79,8 @@ connectDB()
     app.use('/api/userInfo/sendPassword', userInfoRoutes);
     app.use('/api/cart', cartRoutes);
     app.use('/api/cart/add', cartRoutes);
+    app.use('/api/orderHistory',orderHistoryRoutes);
+    app.use('/api/checkout',checkoutRoutes);
 
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);

@@ -18,13 +18,13 @@ const SigninScreen = () => {
         identifier: email,
         password: password,
       });
+      
       console.log('User signed in successfully:', response.data);
 
       // Fetch the username after successful sign-in
       const username = response.data.username;
       // Store the username in local storage
       localStorage.setItem('username', username);
-
       navigate('/');
 
       navigate(0);

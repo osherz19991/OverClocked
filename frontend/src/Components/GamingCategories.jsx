@@ -10,13 +10,13 @@ const GamingCategories = () => {
   };
 
   return (
-    <div style={{ width: '80%', margin: 'auto' }}>
+    <div style={{ width: '100%', marginRight: 'auto' }}>
       <h2 style={{ textAlign: 'center', marginBottom: '30px' }}>Gaming Categories</h2>
-      <Carousel activeIndex={index} onSelect={handleSelect} interval={null} indicators={true}>
+      <Carousel activeIndex={index} onSelect={handleSelect} indicators={true}>
         <Carousel.Item>
           <Row className="justify-content-center">
             <Col md={6} lg={5}>
-              <Link to="/?search=headsets">
+              <Link to="/productsScreen/?search=headsets">
                 <div className="category-item d-flex justify-content-center align-items-center">
                   <img className="d-block w-150" style={{ height: '400px' }} src="/images/headset.jpg" alt="Headset" />
                 </div>
@@ -27,7 +27,7 @@ const GamingCategories = () => {
         <Carousel.Item>
           <Row className="justify-content-center">
             <Col md={6} lg={5}>
-              <Link to="/?search=keyboard">
+              <Link to="/productsScreen/?search=keyboard">
                 <div className="category-item d-flex justify-content-center align-items-center">
                   <img className="d-block w-150" style={{ height: '400px' }} src="/images/keyboard.jpg" alt="Keyboard" />
                 </div>
@@ -38,7 +38,7 @@ const GamingCategories = () => {
         <Carousel.Item>
           <Row className="justify-content-center">
             <Col md={6} lg={5}>
-              <Link to="/?search=Graphics%20Card">
+              <Link to="/productsScreen/?search=Graphics%20Card">
                 <div className="category-item d-flex justify-content-center align-items-center">
                   <img className="d-block w-150" style={{ height: '400px' }} src="/images/GraphicsCard.jpg" alt="Graphics Card" />
                 </div>
@@ -49,7 +49,7 @@ const GamingCategories = () => {
         <Carousel.Item>
           <Row className="justify-content-center">
             <Col md={6} lg={5}>
-              <Link to="/?search=MotherBoard">
+              <Link to="/productsScreen/?search=MotherBoard">
                 <div className="category-item d-flex justify-content-center align-items-center">
                   <img className="d-block w-150" style={{ height: '400px' }} src="/images/MotherBoard.jpg" alt="Motherboard" />
                 </div>

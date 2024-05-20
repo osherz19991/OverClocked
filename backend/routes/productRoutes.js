@@ -1,16 +1,18 @@
 // routes/productRoutes.js
 
-import express from 'express';
+import express, { Router } from 'express';
 import { ObjectId } from 'mongodb';
+import { getDB } from '../config/db.js';
 
 const router = express.Router();
 const productsCollectionName = 'Products';
+const accountsCollectionName = 'accounts';
 
 router.get('/', async (req, res) => {
   try {
-    const db = req.app.locals.db;
+    const db = await getDB();
     const page = parseInt(req.query.page) || 1;
-    const limit = 2400;
+    const limit = 10;
     const skip = (page - 1) * limit;
     const searchQuery = req.query.search;
     const sortField = req.query.sortBy || null;
@@ -53,9 +55,28 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.post('/suggested', async (req, res) => {
+  try {
+    const { username } = req.body;
+    const db = await getDB();
+
+    const account = await db.collection(accountsCollectionName).findOne({ username: username });
+    const categories = account.categories;
+    console.log(account.categories);
+    const products = await db.collection(productsCollectionName).find({ Category: { $in: categories } }).toArray();
+    
+    console.log(products);
+    res.json({ products });
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 router.get('/:id', async (req, res) => {
   try {
-    const db = req.app.locals.db;
+    const db = await getDB();
     const product = await db.collection(productsCollectionName).findOne({ _id: new ObjectId(req.params.id) });
     res.json(product);
   } catch (error) {
@@ -68,7 +89,7 @@ router.put('/:id/updateQuantity', async (req, res) => {
   try {
     const productId = req.params.id;
     const { quantity } = req.body;
-    const db = req.app.locals.db;
+    const db = await getDB();
 
     // Find the product by ID
     const product = await db.collection(productsCollectionName).findOne({ _id: new ObjectId(productId) });
@@ -79,7 +100,7 @@ router.put('/:id/updateQuantity', async (req, res) => {
 
     await db.collection(productsCollectionName).updateOne({ _id: new ObjectId(productId) }, { $set: { quantity: quantity } });
 
-    res.status(200).json({ message: 'Product quantity updated successfully', newQuantity });
+    res.status(200).json({ message: 'Product quantity updated successfully', quantity });
   } catch (error) {
     console.error('Error updating product quantity:', error);
     res.status(500).json({ message: 'Internal server error' });
@@ -88,7 +109,7 @@ router.put('/:id/updateQuantity', async (req, res) => {
 
 router.get('/:id/reviews', async (req, res) => {
   try {
-    const db = req.app.locals.db;
+    const db = await getDB();
     const product = await db.collection(productsCollectionName).findOne({ _id: new ObjectId(req.params.id) });
     res.json(product.reviews || []);
   } catch (error) {
@@ -100,7 +121,7 @@ router.get('/:id/reviews', async (req, res) => {
 // POST /api/products/:id/reviews
 router.post('/:id/reviews', async (req, res) => {
   try {
-    const db = req.app.locals.db;
+    const db = await getDB();
     const productId = req.params.id;
     const { text } = req.body;
     
@@ -124,6 +145,7 @@ router.post('/:id/reviews', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 
 export default router;

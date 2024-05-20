@@ -15,7 +15,7 @@ const Header = () => {
 
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
-    navigate(`/?search=${searchInput}`);
+    navigate(`/productsScreen/?search=${searchInput}`);
     setSearchInput(''); // Clear the search input
   };
 

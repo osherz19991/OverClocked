@@ -1,14 +1,14 @@
 // cartRoutes.js
 
 import express from 'express';
-import { connectDB } from '../config/db.js';
+import { getDB } from '../config/db.js';
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
     // Fetch cart items from the database
-    const db = await connectDB();
+    const db = await getDB();
     const cartItems = await db.collection('cart').find({}).toArray();
     res.json(cartItems);
   } catch (error) {

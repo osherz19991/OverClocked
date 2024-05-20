@@ -17,6 +17,8 @@ import SigninScreen from './Screens/SigninScreen';
 import UserPage from './Screens/UserPage';
 import CartScreen from './Screens/CartScreen';
 import CheckoutScreen from './Screens/CheckoutScreen';
+import OrderHistoryScreen from './Screens/OrderHistoryScreen';
+import ProductsScreen from './Screens/ProductsScreen';
 import reportWebVitals from './reportWebVitals';
 
 const router = createBrowserRouter(
@@ -30,7 +32,8 @@ const router = createBrowserRouter(
     <Route path="/userInfo" element={<UserPage/>} />
     <Route path="/cart" element={<CartScreen/>} />
     <Route path="/checkout" element={<CheckoutScreen/>} />
-
+    <Route path="/orderHistory" element={<OrderHistoryScreen/>} />
+    <Route path="/productsScreen" element={<ProductsScreen/>} />
     </Route>
   )
 )
