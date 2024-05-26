@@ -18,8 +18,15 @@ const HomeScreen = () => {
       const response = await axios.post('/api/products/suggested', {
         username: username,
       });
-      setSuggestedProducts(response.data.products);
-    } catch (error) {
+      if(response.data.product)
+        setSuggestedProducts(response.data.products);
+      else
+      {
+        const response = await axios.get(`/api/products`);
+        const { data } = response;
+        setSuggestedProducts(data.products);
+      }
+      } catch (error) {
       console.error('Error fetching products:', error);
     }
   };

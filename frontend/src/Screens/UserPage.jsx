@@ -28,15 +28,16 @@ const UserPage = () => {
     }
   }, [userData, username]); // Add username to the dependency array
 
-  const handleSendPassword = async () => {
+  const handleSendPasswordResetEmail = async () => {
     try {
-      await axios.post('/api/userInfo/sendPassword', { mail: userData.mail, username: userData.username });
-      alert('Password sent to your email!');
+      await axios.post('/api/userInfo/sendPasswordReset', { mail: userData.mail, username: userData.username });
+      alert('Password reset link sent!');
     } catch (error) {
-      console.error('Error sending password:', error);
-      alert('Failed to send password. Please try again later.');
+      console.error('Error sending password reset email:', error);
+      alert('Failed to send password reset email. Please try again later.');
     }
   };
+  
 
   const handleLogout = async () => {
     try {
@@ -149,9 +150,8 @@ const UserPage = () => {
               <strong>Password:</strong>
             </Col>
             <Col md={9}>
-              <span>{showPassword ? userData.password : '*********'}</span>
-              <Button size="sm" className="ms-2" onClick={() => setShowPassword(!showPassword)}>
-                {showPassword ? 'Hide' : 'Show'}
+              <Button size="sm" onClick={handleSendPasswordResetEmail}>
+                Reset Password
               </Button>
             </Col>
           </Row>
@@ -295,9 +295,6 @@ const UserPage = () => {
           <hr />
           <Row className="mt-3">
             <Col>
-              <Button variant="primary" onClick={handleSendPassword}>
-                Send Password to Email
-              </Button>
               <Button variant="danger" className="ms-2" onClick={handleLogout}>
                 Logout
               </Button>

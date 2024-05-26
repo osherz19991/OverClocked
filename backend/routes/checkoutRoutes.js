@@ -2,6 +2,7 @@
 
 import express from 'express';
 import { getDB } from '../config/db.js';
+import nodemailer from 'nodemailer';
 
 const router = express.Router();
 
@@ -24,11 +25,11 @@ router.post('/', async (req, res) => {
     const db = await getDB();
     const accountsCollectionName = 'accounts';
     const orderId = generateUniqueId();
-    
+
     const account = await db.collection(accountsCollectionName).findOne({ username: username });
     const itemsArray = JSON.parse(cartItems);
     const cartCategories = itemsArray.map(item => item.Category);
-    
+
     // Only add categories that don't already exist in the cart
     const uniqueCartCategories = [...new Set(cartCategories)];
     const existingCategories = new Set(account.categories);
@@ -36,23 +37,70 @@ router.post('/', async (req, res) => {
 
     // Update the cart field in the account with the new categories
     if (newCategories.length > 0) {
-      account.categories.push(...newCategories);
-      await db.collection(accountsCollectionName).updateOne(
-        { username: username },
-        { $set: { categories: account.categories } }
-      );
+      if (account.categories) {
+        account.categories.push(...newCategories);
+        await db.collection(accountsCollectionName).updateOne(
+          { username: username },
+          { $set: { categories: account.categories } }
+        );
+      }
+      else {
+        await db.collection(accountsCollectionName).updateOne(
+          { username: username },
+          { $set: { categories: newCategories } }
+        );
+      }
     }
-    
+
     // Construct the order object and add it to orderHistory
     const order = { cartItems, totalPrice, date: new Date(), id: orderId };
-    account.orderHistory.push(order);
+    if (account.orderHistory) {
+      account.orderHistory.push(order);
+      // Update the account document with the modified orderHistory
+      await db.collection(accountsCollectionName).updateOne(
+        { username: username },
+        { $set: { orderHistory: account.orderHistory } }
+      );
+    }else{
+      await db.collection(accountsCollectionName).updateOne(
+        { username: username },
+        { $set: { orderHistory: [order] } }
+      );
+    }
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: true, 
+      auth: {
+        user: 'overclocked.users@gmail.com', // Your Gmail email address
+        pass: 'bumn hozy elrp uirz', // Your Gmail password
+      },
+    });
 
-    // Update the account document with the modified orderHistory
-    await db.collection(accountsCollectionName).updateOne(
-      { username: username },
-      { $set: { orderHistory: account.orderHistory } }
-    );
+    const mailOptions = {
+      from: 'overclocked.users@gmail.com',
+      to: account.mail,
+      subject: `Bill Number: ${orderId}`,
+      text: `Hi ${username},
 
+      Thank you for choosing OverClocked for your purchase. We greatly appreciate your support!
+      
+      Your total bill comes to ${totalPrice}. We hope you find your items satisfactory and they enhance your gaming experience.
+      
+      Always here to elevate your gaming journey,
+      
+      OverClocked`
+    };
+
+    
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error);
+      } else {
+        console.log('Email sent:', info.response);
+      }
+    });
     res.status(200).json({ message: 'Checkout successful' });
   } catch (error) {
     console.error('Error during checkout:', error);

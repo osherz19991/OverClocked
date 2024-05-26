@@ -19,6 +19,7 @@ import CartScreen from './Screens/CartScreen';
 import CheckoutScreen from './Screens/CheckoutScreen';
 import OrderHistoryScreen from './Screens/OrderHistoryScreen';
 import ProductsScreen from './Screens/ProductsScreen';
+import PasswordReset from './Screens/PasswordReset';
 import reportWebVitals from './reportWebVitals';
 
 const router = createBrowserRouter(
@@ -34,6 +35,7 @@ const router = createBrowserRouter(
     <Route path="/checkout" element={<CheckoutScreen/>} />
     <Route path="/orderHistory" element={<OrderHistoryScreen/>} />
     <Route path="/productsScreen" element={<ProductsScreen/>} />
+    <Route path="/password-reset" element={<PasswordReset />} />
     </Route>
   )
 )

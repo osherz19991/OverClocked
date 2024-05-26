@@ -14,9 +14,10 @@ router.post('/', async (req, res) => {
     const { identifier, password } = req.body;
     const db = await connectDB();
     const accountsCollectionName = 'accounts';
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     
-    const account = await db.collection(accountsCollectionName).findOne({  $or: [{ mail: identifier,password }, { username: identifier,password }]});
+    const account = await db.collection(accountsCollectionName).findOne({  $or: [{ mail: identifier,hashedPassword }, { username: identifier,password }]});
     
     if (!account) {
         return res.status(401).json({ error: 'Invalid username or password' });

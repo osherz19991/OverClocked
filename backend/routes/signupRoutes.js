@@ -4,9 +4,21 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
 import User from '../models/userModel.js'; // Import the User model
-import { connectDB } from '../config/db.js';
+import { getDB } from '../config/db.js';
 
 const router = express.Router();
+
+// Function to validate email format
+const validateEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+// Function to validate password strength
+const validatePassword = (password) => {
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+  return passwordRegex.test(password);
+};
 
 // Route handler for user signup
 router.post('/', async (req, res) => {
@@ -15,12 +27,23 @@ router.post('/', async (req, res) => {
     const { name, password, email } = req.body;
     const mail = email;
     const username = name;
-    const db = await connectDB();
+
+    // Validate email format
+    if (!validateEmail(email)) {
+      return res.status(400).json({ error: 'Invalid email format' });
+    }
+
+    // Validate password strength
+    if (!validatePassword(password)) {
+      return res.status(400).json({ error: 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one digit' });
+    }
+
+    const db = await getDB();
     const accountsCollectionName = 'accounts';
-    const existingAccount = await db.collection(accountsCollectionName).findOne({ username });
-  
-    if(existingAccount){
-      return res.status(400).json({ error: 'Username already exists' }); 
+    const existingAccount = await db.collection(accountsCollectionName).findOne({ mail });
+
+    if (existingAccount) {
+      return res.status(400).json({ error: 'Email already exists' });
     }
 
     // Hash the password
@@ -30,7 +53,7 @@ router.post('/', async (req, res) => {
       service: 'gmail',
       host: 'smtp.gmail.com',
       port: 587,
-      secure: true, 
+      secure: true,
       auth: {
         user: 'overclocked.users@gmail.com', // Your Gmail email address
         pass: 'bumn hozy elrp uirz', // Your Gmail password
@@ -41,9 +64,9 @@ router.post('/', async (req, res) => {
       from: 'overclocked.users@gmail.com',
       to: mail,
       subject: 'Registration Complete',
-      text: 'Thank you for your registration for OverClocked we hope you will have nice shopping experience with us',
+      text: 'Thank you for your registration for OverClocked. We hope you will have a nice shopping experience with us.',
     };
-    
+
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.error('Error sending email:', error);
@@ -51,14 +74,14 @@ router.post('/', async (req, res) => {
         console.log('Email sent:', info.response);
       }
     });
-    await db.collection(accountsCollectionName).insertOne({ username, password, mail });
-  
+
+    await db.collection(accountsCollectionName).insertOne({ username, hashedPassword, mail });
+
     res.json({ message: 'Account created successfully' });
   } catch (error) {
     console.error('Error during signup:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
 
 export default router;

@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
   try {
     const db = await getDB();
     const page = parseInt(req.query.page) || 1;
-    const limit = 10;
+    const limit = 24;
     const skip = (page - 1) * limit;
     const searchQuery = req.query.search;
     const sortField = req.query.sortBy || null;
@@ -61,12 +61,15 @@ router.post('/suggested', async (req, res) => {
     const db = await getDB();
 
     const account = await db.collection(accountsCollectionName).findOne({ username: username });
-    const categories = account.categories;
-    console.log(account.categories);
-    const products = await db.collection(productsCollectionName).find({ Category: { $in: categories } }).toArray();
-    
-    console.log(products);
-    res.json({ products });
+    if (account && account.categories) {
+      const categories = account.categories;
+      console.log(categories);
+      const products = await db.collection(productsCollectionName).find({ Category: { $in: categories } }).toArray();
+      console.log(products);
+      res.json({ products });
+    } else {
+      res.json({ message: 'No categories found for the user or user does not exist' });
+    }
   } catch (error) {
     console.error('Error fetching products:', error);
     res.status(500).json({ error: 'Internal Server Error' });
