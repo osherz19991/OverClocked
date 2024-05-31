@@ -1,5 +1,3 @@
-// checkoutRoutes.js
-
 import express from 'express';
 import { getDB } from '../config/db.js';
 import nodemailer from 'nodemailer';
@@ -16,11 +14,9 @@ const generateUniqueId = () => {
   return result;
 };
 
-// Route for handling checkout requests
 router.post('/', async (req, res) => {
   try {
-    // Retrieve the checkout details from the request body
-    const { username, cartItems, totalPrice } = req.body;
+    const { username, cartItems, totalPrice, paymentDetails, billingAddress } = req.body;
 
     const db = await getDB();
     const accountsCollectionName = 'accounts';
@@ -30,51 +26,53 @@ router.post('/', async (req, res) => {
     const itemsArray = JSON.parse(cartItems);
     const cartCategories = itemsArray.map(item => item.Category);
 
-    // Only add categories that don't already exist in the cart
     const uniqueCartCategories = [...new Set(cartCategories)];
     const existingCategories = new Set(account.categories);
     const newCategories = uniqueCartCategories.filter(category => !existingCategories.has(category));
 
-    // Update the cart field in the account with the new categories
-    if (newCategories.length > 0) {
-      if (account.categories) {
-        account.categories.push(...newCategories);
-        await db.collection(accountsCollectionName).updateOne(
-          { username: username },
-          { $set: { categories: account.categories } }
-        );
-      }
-      else {
-        await db.collection(accountsCollectionName).updateOne(
-          { username: username },
-          { $set: { categories: newCategories } }
-        );
-      }
+    if (!account.billingAddress) {
+      await db.collection(accountsCollectionName).updateOne(
+        { username: username },
+        { $set: { billingAddress: billingAddress } }
+      );
     }
 
-    // Construct the order object and add it to orderHistory
-    const order = { cartItems, totalPrice, date: new Date(), id: orderId };
-    if (account.orderHistory) {
-      account.orderHistory.push(order);
-      // Update the account document with the modified orderHistory
+    if (newCategories.length > 0) {
+      const updatedCategories = account.categories ? [...account.categories, ...newCategories] : newCategories;
       await db.collection(accountsCollectionName).updateOne(
         { username: username },
-        { $set: { orderHistory: account.orderHistory } }
-      );
-    }else{
-      await db.collection(accountsCollectionName).updateOne(
-        { username: username },
-        { $set: { orderHistory: [order] } }
+        { $set: { categories: updatedCategories } }
       );
     }
+
+    const order = { cartItems, totalPrice, date: new Date(), id: orderId };
+    const updatedOrderHistory = account.orderHistory ? [...account.orderHistory, order] : [order];
+    await db.collection(accountsCollectionName).updateOne(
+      { username: username },
+      { $set: { orderHistory: updatedOrderHistory } }
+    );
+
+    const existingPaymentMethods = account.paymentMethods || [];
+    const paymentMethodExists = existingPaymentMethods.some(
+      method => method.cardNumber === paymentDetails.cardNumber
+    );
+
+    if (!paymentMethodExists) {
+      existingPaymentMethods.push(paymentDetails);
+      await db.collection(accountsCollectionName).updateOne(
+        { username: username },
+        { $set: { paymentMethods: existingPaymentMethods } }
+      );
+    }
+
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       host: 'smtp.gmail.com',
       port: 587,
-      secure: true, 
+      secure: true,
       auth: {
-        user: 'overclocked.users@gmail.com', // Your Gmail email address
-        pass: 'bumn hozy elrp uirz', // Your Gmail password
+        user: 'overclocked.users@gmail.com',
+        pass: 'bumn hozy elrp uirz',
       },
     });
 
@@ -93,7 +91,6 @@ router.post('/', async (req, res) => {
       OverClocked`
     };
 
-    
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.error('Error sending email:', error);
@@ -101,11 +98,38 @@ router.post('/', async (req, res) => {
         console.log('Email sent:', info.response);
       }
     });
+
     res.status(200).json({ message: 'Checkout successful' });
   } catch (error) {
     console.error('Error during checkout:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+// Route for fetching existing payment methods
+router.post('/paymentMethods', async (req, res) => {
+  try {
+    const { username } = req.body;
+    const db = await getDB();
+    const accountsCollectionName = 'accounts';
+
+    const account = await db.collection(accountsCollectionName).findOne({ username: username });
+
+    if (account) {
+      res.status(200).json({
+        paymentMethods: account.paymentMethods || [],
+        billingAddress: account.billingAddress || {}
+      });
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  } catch (error) {
+    console.error('Error fetching payment methods and billing address:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
 
 export default router;

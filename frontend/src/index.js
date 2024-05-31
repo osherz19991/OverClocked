@@ -20,8 +20,10 @@ import CheckoutScreen from './Screens/CheckoutScreen';
 import OrderHistoryScreen from './Screens/OrderHistoryScreen';
 import ProductsScreen from './Screens/ProductsScreen';
 import PasswordReset from './Screens/PasswordReset';
+import AboutUs from './Screens/AboutUsScreen';
+import ContactUs from './Screens/ContactUs';
+import ForumScreen from './Screens/ForumScreen';
 import reportWebVitals from './reportWebVitals';
-
 const router = createBrowserRouter(
   createRoutesFromElements(
 
@@ -36,6 +38,9 @@ const router = createBrowserRouter(
     <Route path="/orderHistory" element={<OrderHistoryScreen/>} />
     <Route path="/productsScreen" element={<ProductsScreen/>} />
     <Route path="/password-reset" element={<PasswordReset />} />
+    <Route path="/contact-us" element={<ContactUs />} />
+    <Route path="/about-us" element={<AboutUs/>} />
+    <Route path="/forum" element={<ForumScreen/>} />
     </Route>
   )
 )

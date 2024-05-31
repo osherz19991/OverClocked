@@ -1,32 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Container, Image, Row, Col, Card, Button } from 'react-bootstrap';
+import Rating from 'react-rating';
+import { Link } from 'react-router-dom';
 
 const UserPage = () => {
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState();
   const [error, setError] = useState(null);
-  const [showPassword, setShowPassword] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const navigate = useNavigate();
   const username = localStorage.getItem('username');
 
-  // Function to fetch user data
   const fetchUserData = async () => {
     try {
       const response = await axios.post('/api/userInfo', { username });
+      console.log('Response data:', response.data);  // Log the response data
       setUserData(response.data);
     } catch (error) {
+      console.error('Error fetching user data:', error);  // Log the error details
       setError('Error fetching user data');
     }
   };
 
+
   useEffect(() => {
     // Fetch user data from the backend API
     if (!userData) {
+      console.log('Fetching user data for username:', username);
       fetchUserData();
     }
-  }, [userData, username]); // Add username to the dependency array
+  }, [username]); // Run again when username changes
+
+
+  useEffect(() => {
+    console.log('userData updated:', userData);
+  }, [userData]); // Log when userData updates
+
+
 
   const handleSendPasswordResetEmail = async () => {
     try {
@@ -37,7 +48,7 @@ const UserPage = () => {
       alert('Failed to send password reset email. Please try again later.');
     }
   };
-  
+
 
   const handleLogout = async () => {
     try {
@@ -64,7 +75,7 @@ const UserPage = () => {
       const response = await axios.post('/api/userInfo/toggleEmailNotifications', {
         username: userData.username,
       });
-      setUserData({ ...userData, emailNotifications: response.data });
+      setUserData(prevUserData => ({ ...prevUserData, emailNotifications: response.data }));
     } catch (error) {
       console.error('Error toggling email notifications:', error);
       alert('Failed to update email notifications. Please try again later.');
@@ -76,12 +87,13 @@ const UserPage = () => {
       const response = await axios.post('/api/userInfo/toggleTwoFactorAuth', {
         username: userData.username,
       });
-      setUserData({ ...userData, twoFactorAuth: response.data });
+      setUserData(prevUserData => ({ ...prevUserData, twoFactorAuth: response.data }));
     } catch (error) {
       console.error('Error toggling two-factor authentication:', error);
       alert('Failed to update two-factor authentication. Please try again later.');
     }
   };
+
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -104,7 +116,7 @@ const UserPage = () => {
       });
 
       // Fetch user data again to update avatar
-      await fetchUserData();
+      //await fetchUserData();
       alert('File uploaded successfully!');
     } catch (error) {
       console.error('Error uploading file:', error);
@@ -119,6 +131,16 @@ const UserPage = () => {
   if (!userData) {
     return <div>Loading...</div>;
   }
+
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 0; i < 5; i++) {
+      stars.push(
+        <span key={i} style={{ color: i < rating ? 'gold' : 'gray' }}>★</span>
+      );
+    }
+    return stars;
+  };
 
   return (
     <Container className="mt-4">
@@ -163,21 +185,10 @@ const UserPage = () => {
           </Row>
           <Row className="mb-3 align-items-center">
             <Col md={3}>
-              <strong>Shipping Address:</strong>
-            </Col>
-            <Col md={9}>
-              <span>{userData.shippingAddress}</span>
-              <Button size="sm" className="ms-2">
-                Update
-              </Button>
-            </Col>
-          </Row>
-          <Row className="mb-3 align-items-center">
-            <Col md={3}>
               <strong>Billing Address:</strong>
             </Col>
             <Col md={9}>
-              <span>{userData.billingAddress}</span>
+              <span>{`${userData.billingAddress?.addressLine1 ?? ''} ${userData.billingAddress?.country ?? ''}`}</span>
               <Button size="sm" className="ms-2">
                 Update
               </Button>
@@ -200,14 +211,15 @@ const UserPage = () => {
           <Row className="mb-3">
             <Col md={12}>
               <h2>Payment Methods</h2>
-              <Button>Add Payment Methood</Button>
+              <Button>Add Payment Method</Button>
             </Col>
           </Row>
           {userData.paymentMethods && userData.paymentMethods.length > 0 ? (
-            userData.paymentMethods.map((paymentMethod, index) => (
+            userData.paymentMethods.map((card, index) => (
               <Row key={index} className="mb-3 align-items-center">
                 <Col md={12}>
-                  <span>{paymentMethod}</span>
+                  <span>card number {index + 1}: </span>
+                  <span>#### #### #### {card?.cardNumber?.slice(-4)}</span> {/* Add optional chaining */}
                 </Col>
               </Row>
             ))
@@ -281,7 +293,15 @@ const UserPage = () => {
             userData.reviews.map((review, index) => (
               <Row key={index} className="mb-3 align-items-center">
                 <Col md={12}>
-                  <span>Review for {review.productName}: "{review.reviewText}"</span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span>
+                      <Link to={`/product/${review.product._id}`}>
+                        <Image src={review.product.imgUrl} alt={review.product.title} style={{ width: '40px', marginRight: '10px' }} />
+                      </Link>
+                      : "{review.newReview.text}"
+                    </span>
+                    <div>{renderStars(review.newReview.rating)}</div>
+                  </div>
                 </Col>
               </Row>
             ))

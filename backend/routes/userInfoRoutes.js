@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
     if (!account)
         return res.status(401).json({ error: 'Invalid username or password' });
     else
-      res.json({username: account.username, mail: account.mail, password: account.password});
+      res.json(account);
 
 
   } catch (error) {

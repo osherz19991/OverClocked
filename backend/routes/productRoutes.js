@@ -121,17 +121,31 @@ router.get('/:id/reviews', async (req, res) => {
   }
 });
 
+router.get('/:id/reviews', async (req, res) => {
+  try {
+    const db = await getDB();
+    const product = await db.collection(productsCollectionName).findOne({ _id: new ObjectId(req.params.id) });
+    res.json(product.reviews || []);
+  } catch (error) {
+    console.error('Error fetching reviews:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // POST /api/products/:id/reviews
 router.post('/:id/reviews', async (req, res) => {
   try {
     const db = await getDB();
     const productId = req.params.id;
-    const { text } = req.body;
+    const { username, text, rating, createdAt } = req.body;
     
     // Create a new review object
     const newReview = {
       _id: new ObjectId(),
+      username,
       text,
+      rating,
+      createdAt,
     };
     
     // Find the product by ID and update its reviews array
@@ -140,14 +154,24 @@ router.post('/:id/reviews', async (req, res) => {
       { $push: { reviews: newReview } },
       { returnOriginal: false } // Return the updated document
     );
-    
+    const product = await db.collection(productsCollectionName).findOne({ _id: new ObjectId(productId) });
+    const account = await db.collection(accountsCollectionName).findOne({ username: username });
+    const userReview = { product, newReview };
+    if (account.reviews) {
+      account.reviews.push(userReview);
+      await db.collection(accountsCollectionName).updateOne(
+        { username: username },
+        { $set: { reviews: account.reviews } }
+      );
+    }
     // Send back the updated reviews array
-    res.json(result.value.reviews);
+    res.json(result.reviews);
   } catch (error) {
     console.error('Error adding review:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 
 

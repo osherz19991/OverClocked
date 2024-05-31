@@ -22,6 +22,8 @@
     "multer-gridfs-storage": "^5.0.2",
     "nodemailer": "^6.9.13",
     "react-bootstrap": "^2.10.2",
+    "react-datepicker": "^6.9.0",
+    "react-rating": "^2.0.5",
     "react-speech-recognition": "^3.10.0"
   },
   "devDependencies": {

@@ -22,8 +22,8 @@ export const Footer = () => {
             <h5>Quick Links</h5>
             <ul className="list-unstyled">
               <li><a href="/">Home</a></li>
-              <li><a href="#">About Us</a></li>
-              <li><a href="#">Contact Us</a></li>
+              <li><a href="/about-us">About Us</a></li>
+              <li><a href="/contact-us">Contact Us</a></li>
             </ul>
           </Col>
           <Col md={6} className="text-center text-md-right">
