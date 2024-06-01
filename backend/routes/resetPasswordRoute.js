@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
 
     // Update the user's password in the database
     await db.collection('accounts').updateOne(
-      { username: tokenDoc.username },
+      { mail: tokenDoc.mail },
       { $set: { hashedPassword: hashedPassword } }
     );
 

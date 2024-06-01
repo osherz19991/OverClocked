@@ -124,7 +124,7 @@ router.post('/sendPasswordReset', async (req, res) => {
     const resetToken = generateResetToken();
 
     // Save the token in the database for later verification
-    await db.collection('passwordResetTokens').insertOne({ username, token: resetToken });
+    await db.collection('passwordResetTokens').insertOne({ mail, token: resetToken });
 
     const resetLink = `http://http://localhost:3000/password-reset?token=${resetToken}`;
     const mailOptions = {

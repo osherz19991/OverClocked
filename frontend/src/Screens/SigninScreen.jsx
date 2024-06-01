@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
 const styles = {
   signinContainer: {
     width: '300px',
@@ -31,6 +32,11 @@ const styles = {
     marginBottom: '15px',
     textAlign: 'center',
   },
+  successMessage: {
+    color: 'green',
+    marginBottom: '15px',
+    textAlign: 'center',
+  },
   signinButton: {
     width: '100%',
     padding: '10px',
@@ -47,6 +53,9 @@ const styles = {
   link: {
     color: '#007BFF',
     textDecoration: 'none',
+    marginTop: '10px',
+    display: 'block',
+    textAlign: 'center',
   },
 };
 
@@ -54,12 +63,15 @@ const SigninScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetError, setResetError] = useState('');
+  const [resetMessage, setResetMessage] = useState('');
+  const [showReset, setShowReset] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Make a POST request to the sign-in endpoint
       const response = await axios.post('/api/signin', {
         identifier: email,
         password: password,
@@ -67,16 +79,26 @@ const SigninScreen = () => {
 
       console.log('User signed in successfully:', response.data);
 
-      // Fetch the username after successful sign-in
       const username = response.data.username;
-      // Store the username in local storage
       localStorage.setItem('username', username);
       navigate('/');
-
       navigate(0);
     } catch (error) {
       console.error('Error signing in:', error.response.data);
       setError('Invalid email or password');
+    }
+  };
+
+  const handlePasswordReset = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('/api/signin/sendPasswordReset', { mail: resetEmail });
+      setResetMessage('Password reset link sent. Please check your email.');
+      setResetError('');
+    } catch (error) {
+      console.error('Error sending password reset link:', error.response.data);
+      setResetError('Error sending password reset link.');
+      setResetMessage('');
     }
   };
 
@@ -112,9 +134,29 @@ const SigninScreen = () => {
       <p>
         Don't have an account? <Link to="/signup" style={styles.link}>Sign Up</Link>
       </p>
+      <p>
+        <span onClick={() => setShowReset(!showReset)} style={styles.link}>Forgot Password?</span>
+      </p>
+      {showReset && (
+        <form onSubmit={handlePasswordReset} style={styles.form}>
+          <div style={styles.formGroup}>
+            <label htmlFor="resetEmail">Enter your email to reset password:</label>
+            <input
+              type="email"
+              id="resetEmail"
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
+              required
+              style={styles.input}
+            />
+          </div>
+          {resetError && <p style={styles.errorMessage}>{resetError}</p>}
+          {resetMessage && <p style={styles.successMessage}>{resetMessage}</p>}
+          <button type="submit" style={styles.signinButton}>Send Reset Link</button>
+        </form>
+      )}
     </div>
   );
 };
-
 
 export default SigninScreen;
