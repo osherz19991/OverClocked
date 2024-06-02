@@ -7,8 +7,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node backend/server.js",
-    "build": "cd frontend && npm run build && xcopy build ..\\build /E /Y /I",
-    "server": "nodemon backend/server.js",
+    "build": "cd frontend && npm run build",
+    "deploy": "gh-pages -d frontend/build",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "predeploy": "npm run build",
