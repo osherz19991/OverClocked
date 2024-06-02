@@ -33,7 +33,7 @@ const Header = () => {
         <Container>
           <Navbar.Brand>
             <LinkContainer to="/">
-              <div>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
                 <img
                   src={'/images/logo.png'} alt="OverClocked Logo" style={{ marginBottom: '10px' }} />
                 OverClocked
@@ -63,19 +63,19 @@ const Header = () => {
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto" style={{ width: '10vw' }}>
+            <Nav className="ms-auto" style={{ width: '15vw' }}>
               <LinkContainer to="/cart">
-                <Nav.Link>
+                <Nav.Link style={{ display: 'flex', alignItems: 'center' }}>
                   <FaShoppingCart /> Cart
                 </Nav.Link>
               </LinkContainer>
               {username ? (
-                <Nav.Link onClick={handleUserClick} style={{ width: '10vw' }}>
+                <Nav.Link onClick={handleUserClick} style={{ display: 'flex', alignItems: 'center' }}>
                   <FaUser /> {username}
                 </Nav.Link>
               ) : (
                 <LinkContainer to="/signin">
-                  <Nav.Link>
+                  <Nav.Link style={{ display: 'flex', alignItems: 'center' }}>
                     <FaUser /> Sign In
                   </Nav.Link>
                 </LinkContainer>
