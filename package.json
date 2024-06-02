@@ -7,7 +7,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node backend/server.js",
-    "build": "cd frontend && npm run build && move build ..\\build",
+    "build": "cd frontend && npm run build && xcopy build ..\\build /E /Y /I",
     "server": "nodemon backend/server.js",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
