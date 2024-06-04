@@ -1,28 +1,20 @@
-import { count } from "console";
-import mongoose from "mongoose";
-const reviewSchema = mongoose.Schema({
-user:{ type: mongoose.Schema.Types.ObjectId, required: true, ref: "User"},
-name: { type: String, required: true },
-rating: { type: Number, required: true },
-comment: { type: String, required: true },
+import mongoose from 'mongoose';
+
+const productSchema = new mongoose.Schema({
+  _id: String, // Assuming you have a unique identifier for each product
+  asin: String,
+  title: String,
+  imgUrl: String,
+  productURL: String,
+  stars: Number,
+  price: Number,
+  listPrice: Number,
+  category_id: String, // Or another appropriate field for category
+  Category: String, // Can be removed if redundant with category_id
+  quantity: Number,
+  numberOfReviews: Number,
 });
 
 
-const productSchema = new mongoose.Schema({
-  asin: { type: String, required: true },
-  title: { type: String, required: true },
-  imgUrl: { type: String, required: true },
-  productURL: { type: String, required: true },
-  stars: { type: String, required: true, default: "0"},
-  reviews: { type: [], required: true },
-  price: { type: String, required: true },
-  listPrice: { type: String, required: true },
-  category_id: { type: String, required: true },
-  countInStock: { type: Number, required: true },
-  numReviews: { type: Number, required: true },
-  category: { type: String, required: true}
-  });
-
-  const Product = mongoose.model("Product", productSchema, "Products");
-
-    export default Product;
+const Product = mongoose.model('Product', productSchema);
+export default Product;

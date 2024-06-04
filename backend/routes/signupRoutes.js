@@ -75,7 +75,7 @@ router.post('/', async (req, res) => {
       }
     });
 
-    await db.collection(accountsCollectionName).insertOne({ username, hashedPassword, mail });
+    await db.collection(accountsCollectionName).insertOne({ username, hashedPassword, mail, role: 'new', createdDate: new Date() });
 
     res.json({ message: 'Account created successfully' });
   } catch (error) {

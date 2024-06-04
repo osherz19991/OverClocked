@@ -47,9 +47,9 @@ router.post('/', async (req, res) => {
     const { username } = req.body;
     const db = await getDB();
     const accountsCollectionName = 'accounts';
-    const account = await db.collection(accountsCollectionName).findOne({  $or: [{ email: username }, { username: username }]});
+    const account = await db.collection(accountsCollectionName).findOne({ $or: [{ email: username }, { username: username }] });
     if (!account)
-        return res.status(401).json({ error: 'Invalid username or password' });
+      return res.status(401).json({ error: 'Invalid username or password' });
     else
       res.json(account);
 
@@ -65,7 +65,7 @@ router.post('/toggleEmailNotifications', async (req, res) => {
     const { username } = req.body;
     const db = await getDB();
     const accountsCollectionName = 'accounts';
-    const account = await db.collection(accountsCollectionName).findOne({ username: username});
+    const account = await db.collection(accountsCollectionName).findOne({ username: username });
     account.emailNotifications = !(account.emailNotifications);
     await db.collection(accountsCollectionName).updateOne(
       { username: username },
@@ -73,30 +73,47 @@ router.post('/toggleEmailNotifications', async (req, res) => {
     );
     res.json(account.emailNotifications);
 
-    } catch (error) {
-      console.error('Error toggle Email Notifications ', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  });
+  } catch (error) {
+    console.error('Error toggle Email Notifications ', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
-  router.post('/toggleTwoFactorAuth', async (req, res) => {
-    try {
-      const { username } = req.body;
-      const db = await getDB();
-      const accountsCollectionName = 'accounts';
-      const account = await db.collection(accountsCollectionName).findOne({ username: username});
-      account.toggleTwoFactorAuth = !(account.toggleTwoFactorAuth);
-      await db.collection(accountsCollectionName).updateOne(
-        { username: username },
-        { $set: { toggleTwoFactorAuth: account.toggleTwoFactorAuth } }
-      );
-      res.json(account.toggleTwoFactorAuth);
-  
-      } catch (error) {
-        console.error('Error toggle Email Notifications ', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-      }
-    });
+router.post('/toggleTwoFactorAuth', async (req, res) => {
+  try {
+    const { username } = req.body;
+    const db = await getDB();
+    const accountsCollectionName = 'accounts';
+    const account = await db.collection(accountsCollectionName).findOne({ username: username });
+    account.toggleTwoFactorAuth = !(account.toggleTwoFactorAuth);
+    await db.collection(accountsCollectionName).updateOne(
+      { username: username },
+      { $set: { toggleTwoFactorAuth: account.toggleTwoFactorAuth } }
+    );
+    res.json(account.toggleTwoFactorAuth);
+
+  } catch (error) {
+    console.error('Error toggle Email Notifications ', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+router.get('/checkUserRole', async (req, res) => {
+  try {
+    const db = await getDB();
+    const usersCollection = db.collection('accounts');
+    const { username } = req.query; // Use req.query to get URL parameters
+    const account = await usersCollection.findOne({ $or: [{ email: username }, { username: username }] });
+    if (!account)
+      return res.status(401).json({ error: 'Invalid username or user is not an admin' });
+    else
+      res.status(200).json(account.role);
+  } catch (error) {
+    console.error('Error checking user if is admin:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 router.post('/logout', async (req, res) => {
   try {
     res.json({ message: 'Logout successful' });
@@ -114,7 +131,7 @@ router.post('/sendPasswordReset', async (req, res) => {
       service: 'gmail',
       host: 'smtp.gmail.com',
       port: 587,
-      secure: true, 
+      secure: true,
       auth: {
         user: 'overclocked.users@gmail.com', // Your Gmail email address
         pass: 'bumn hozy elrp uirz', // Your Gmail password
@@ -133,7 +150,7 @@ router.post('/sendPasswordReset', async (req, res) => {
       subject: 'Reset Password',
       text: 'Your password reset link is here please press here in order to reset your password\n' + resetLink,
     };
-    
+
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.error('Error sending email:', error);

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import Header from './Components/Header'
 import Footer from './Components/Footer'
@@ -7,6 +7,13 @@ import { Outlet } from 'react-router-dom';
 
 
 export const App = () => {
+  useEffect(() => {
+    const viewportMeta = document.createElement('meta');
+    viewportMeta.name = 'viewport';
+    viewportMeta.content = 'width=device-width, initial-scale=1.0'; // Adjust as needed
+    document.head.appendChild(viewportMeta);
+  }, []);
+
   return (
     <>
       <Header />

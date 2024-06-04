@@ -45,7 +45,6 @@ const sendOrderConfirmationEmail = async (username, orderId, totalPrice, recipie
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log('Email sent:', info.response);
   } catch (error) {
     console.error('Error sending email:', error);
   }
@@ -96,9 +95,9 @@ router.post('/', async (req, res) => {
     // Update payment methods if the card is not already present
     const existingPaymentMethods = account.paymentMethods || [];
     const paymentMethodExists = existingPaymentMethods.some(
-      method => method.cardNumber === paymentDetails.cardNumber
+      method => method.cardNumber === paymentDetails
     );
-
+    
     if (!paymentMethodExists) {
       existingPaymentMethods.push(paymentDetails);
       await db.collection(accountsCollectionName).updateOne(
@@ -106,6 +105,19 @@ router.post('/', async (req, res) => {
         { $set: { paymentMethods: existingPaymentMethods } }
       );
     }
+
+    // Insert purchase into 'purchases' collection
+    const purchaseData = {
+      username: username,
+      orderId: orderId,
+      cartItems: cartItems,
+      totalPrice: totalPrice,
+      paymentDetails: paymentDetails,
+      billingAddress: billingAddress,
+      purchaseDate: new Date()
+    };
+
+    await db.collection('purchases').insertOne(purchaseData);
 
     // Send confirmation email
     await sendOrderConfirmationEmail(username, orderId, totalPrice, account.mail);

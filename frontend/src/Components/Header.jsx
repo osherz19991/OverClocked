@@ -1,13 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Navbar, Nav, Button, Container, Form, Row, Col } from 'react-bootstrap';
 import { FaShoppingCart, FaUser } from 'react-icons/fa';
+import { RiAdminFill } from "react-icons/ri";
 import { LinkContainer } from 'react-router-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const navigate = useNavigate();
   const [searchInput, setSearchInput] = useState('');
+  const [userRole, setUserRole] = useState('normal');
   const username = localStorage.getItem('username');
+
+  useEffect(() => {
+    const handleCheckUserRole = async () => {
+      try {
+        const response = await axios.get(`/api/userInfo/checkUserRole`, {
+          params: { username: username },
+        });
+        setUserRole(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching user role:', error);
+      }
+    };
+    handleCheckUserRole();
+  }, []);
+
+
 
   const handleSearchInputChange = (e) => {
     setSearchInput(e.target.value);
@@ -25,6 +45,10 @@ const Header = () => {
     } else {
       navigate('/signin');
     }
+  };
+
+  const handleAdminClick = () => {
+    navigate('/admin');
   };
 
   return (
@@ -63,7 +87,7 @@ const Header = () => {
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto" style={{ width: '15vw' }}>
+            <Nav className="ms-auto" style={{ width: '10vw' }}>
               <LinkContainer to="/cart">
                 <Nav.Link style={{ display: 'flex', alignItems: 'center' }}>
                   <FaShoppingCart /> Cart
@@ -79,6 +103,11 @@ const Header = () => {
                     <FaUser /> Sign In
                   </Nav.Link>
                 </LinkContainer>
+              )}
+              {userRole === 'admin' && (
+                <Nav.Link onClick={handleAdminClick} style={{ display: 'flex', alignItems: 'center' }}>
+                  <RiAdminFill /> Admin
+                </Nav.Link>
               )}
             </Nav>
           </Navbar.Collapse>

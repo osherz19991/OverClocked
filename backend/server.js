@@ -56,6 +56,7 @@ import orderHistoryRoutes from './routes/orderHistoryRoutes.js'
 import checkoutRoutes from './routes/checkoutRoutes.js'
 import resetPassword from './routes/resetPasswordRoute.js'
 import forumRoutes from './routes/forumRoutes.js'
+import adminRoutes from './routes/adminRoutes.js'
 import { connectDB } from './config/db.js';
 
 const app = express();
@@ -84,7 +85,7 @@ connectDB()
     app.use('/api/checkout',checkoutRoutes);
     app.use('/api/resetPassword',resetPassword);
     app.use('/api/forum',forumRoutes);
-
+    app.use('/api/admin',adminRoutes);
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });

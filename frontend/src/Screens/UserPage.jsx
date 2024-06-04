@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Container, Image, Row, Col, Card, Button } from 'react-bootstrap';
-import Rating from 'react-rating';
 import { Link } from 'react-router-dom';
 
 const UserPage = () => {
@@ -15,7 +14,6 @@ const UserPage = () => {
   const fetchUserData = async () => {
     try {
       const response = await axios.post('/api/userInfo', { username });
-      console.log('Response data:', response.data);  // Log the response data
       setUserData(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);  // Log the error details
@@ -27,17 +25,9 @@ const UserPage = () => {
   useEffect(() => {
     // Fetch user data from the backend API
     if (!userData) {
-      console.log('Fetching user data for username:', username);
       fetchUserData();
     }
   }, [username]); // Run again when username changes
-
-
-  useEffect(() => {
-    console.log('userData updated:', userData);
-  }, [userData]); // Log when userData updates
-
-
 
   const handleSendPasswordResetEmail = async () => {
     try {

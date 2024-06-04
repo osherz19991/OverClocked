@@ -49,6 +49,7 @@ const ProductScreen = () => {
     setUsername(localStorage.getItem('username'));
     fetchProduct();
     fetchReviews();
+    setQuantity(1);
   }, [productId]);
 
   useEffect(() => {

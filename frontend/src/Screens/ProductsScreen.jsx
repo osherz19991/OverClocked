@@ -3,18 +3,19 @@ import { useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
 import { Row, Col, Button, Carousel, Card } from 'react-bootstrap';
 import { Product } from '../Components/Product';
-import Rating from '../Components/Rating'
-import GamingCategories from '../Components/GamingCategories'; // Import the GamingCategories component
+import Pagination from '../Components/Pagination';
 import { BsChevronRight, BsChevronLeft } from 'react-icons/bs'; // Import icons for next and previous arrows
 
 const ProductsScreen = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const searchQuery = searchParams.get('search') || '';
-  const [SuggestedProducts, setSuggestedProducts] = useState([]);
   const [products, setProducts] = useState([]);
-  const [sortBy, setSortBy] = useState('price'); // Default sorting by price
-  const [sortOrder, setSortOrder] = useState('asc'); // Default sorting order ascending
+  const [SuggestedProducts, setSuggestedProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(12);
+  const [sortBy, setSortBy] = useState('price');
+  const [sortOrder, setSortOrder] = useState('asc');
   const username = localStorage.getItem('username');
 
   useEffect(() => {
@@ -30,6 +31,16 @@ const ProductsScreen = () => {
     fetchProducts();
     fetchSuggestedProducts();
   }, [searchQuery, sortBy, sortOrder]);
+
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top of the page
+  };
+  
 
   const fetchSuggestedProducts = async () => {
     try {
@@ -66,12 +77,16 @@ const ProductsScreen = () => {
         </Button>
       </div>
       <Row>
-        {products.map((product) => (
+        {currentProducts.map((product) => (
           <Col key={product._id} sm={12} md={12} lg={12} xl={12}>
             <Product product={product} />
           </Col>
         ))}
       </Row>
+      <div className="d-flex justify-content-center mt-3">
+        <Pagination productsPerPage={productsPerPage} totalProducts={products.length} paginate={paginate} />
+      </div>
+    
       <h2>Suggested Products For You</h2>
       <Carousel
         variant="dark"
