@@ -1,57 +1,79 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import ChartComponent from '../Components/ChartComponet';
 import { Spinner } from 'react-bootstrap';
+import UserRoleChecker from '../Components/UserRoleChecker';
 
 const AdminScreen = () => {
+  const navigate = useNavigate();
+  const [userRole, setUserRole] = useState('normal');
   const [purchases, setPurchases] = useState([]);
   const [userDistribution, setUserDistribution] = useState({ new: 2, normal: 3, admin: 1 });
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [summaryStats, setSummaryStats] = useState({ totalPurchases: 0, totalUsers: 0 });
   const [productCategoriesData, setProductCategoriesData] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const [purchasesRes, statsRes] = await Promise.all([
-          axios.get('/api/admin/lastYear'),
-          axios.get('/api/admin')
-        ]);
-
-        setPurchases(purchasesRes.data);
-        setUserDistribution(statsRes.data.userDistribution);
-        setSummaryStats({
-          totalPurchases: statsRes.data.totalPurchases,
-          totalUsers: statsRes.data.totalUsers
-        });
-        setProductCategoriesData(statsRes.data.pieChartData);
-        console.log(statsRes.data);
-        console.log(productCategoriesData.datasets.data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setLoading(false);
+    const checkUserRole = async () => {
+      const storedUsername = localStorage.getItem('username');
+      if (storedUsername) {
+        try {
+          const role = await UserRoleChecker({ username: storedUsername });
+          setUserRole(role);
+          if (role !== 'admin') {
+            alert('You have no access to this page. Redirecting to Home Page.');
+            navigate('/');
+          }
+        } catch (error) {
+          console.error('Error checking user role:', error);
+          navigate('/');
+        }
+      } else {
+        alert('No username found. Redirecting to Home Page.');
+        navigate('/');
       }
     };
 
-    fetchData();
-  }, []);
+    checkUserRole();
+  }, [navigate]);
 
   useEffect(() => {
-    const fetchPurchases = async (timeInterval) => {
-      try {
-        const response = await axios.get(`/api/admin/${timeInterval}`);
-        setPurchases(response.data);
-      } catch (error) {
-        console.error('Error fetching purchases:', error);
-      }
-    };
-    fetchPurchases('lastYear');
-  }, []);
+    if (userRole === 'admin') {
+      const fetchData = async () => {
+        try {
+          setLoading(true);
+          const [statsRes] = await Promise.all([
+            axios.get('/api/admin')
+          ]);
 
+          setUserDistribution(statsRes.data.userDistribution);
+          setProductCategoriesData(statsRes.data.pieChartData);
+          setLoading(false);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          setLoading(false);
+        }
+      };
+
+      fetchData();
+    }
+  }, [userRole]);
+
+  useEffect(() => {
+    if (userRole === 'admin') {
+      const fetchPurchases = async () => {
+        try {
+          const response = await axios.get(`/api/admin/lastYear`);
+          setPurchases(response.data);
+        } catch (error) {
+          console.error('Error fetching purchases:', error);
+        }
+      };
+      fetchPurchases();
+    }
+  }, [userRole]);
 
   const handleTimeIntervalChange = async (timeInterval) => {
     try {
@@ -88,6 +110,10 @@ const AdminScreen = () => {
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
+
+  if (userRole !== 'admin') {
+    return null;
+  }
 
   return (
     <div style={{ padding: '20px' }}>
@@ -168,9 +194,6 @@ const AdminScreen = () => {
       </div>
     </div>
   );
-
-
-
 };
 
 export default AdminScreen;

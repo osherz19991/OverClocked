@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Container, Image, Row, Col, Card, Button } from 'react-bootstrap';
+import { Container, Image, Row, Col, Card, Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
-const UserPage = () => {
+const UserScreen = () => {
   const [userData, setUserData] = useState();
   const [error, setError] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const navigate = useNavigate();
   const username = localStorage.getItem('username');
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [paymentDetails, setPaymentDetails] = useState({ cardNumber: '' });
+  const [fieldErrors, setFieldErrors] = useState({});
 
   const fetchUserData = async () => {
     try {
@@ -45,9 +50,20 @@ const UserPage = () => {
       await axios.post('/api/userInfo/logout');
       localStorage.removeItem('username');
       navigate('/');
+      navigate(0);
     } catch (error) {
       console.error('Error logging out:', error);
       // Handle logout error, if any
+    }
+  };
+
+  
+
+  const handleForumHistory = async () => {
+    try {
+      navigate('/ForumHistory');
+    } catch (error) {
+      console.error('Error loading order history:', error);
     }
   };
 
@@ -132,13 +148,15 @@ const UserPage = () => {
     return stars;
   };
 
+
+
   return (
     <Container className="mt-4">
       <Card>
         <Card.Body>
           <Row className="mb-3">
             <Col md={9}>
-              <h2>User Information</h2>
+              <h2>User Information:</h2>
             </Col>
           </Row>
           <Row className="mb-3 align-items-center">
@@ -170,7 +188,7 @@ const UserPage = () => {
           <hr />
           <Row className="mb-3">
             <Col md={12}>
-              <h2>Address Information</h2>
+              <h2>Address Information:</h2>
             </Col>
           </Row>
           <Row className="mb-3 align-items-center">
@@ -179,15 +197,12 @@ const UserPage = () => {
             </Col>
             <Col md={9}>
               <span>{`${userData.billingAddress?.addressLine1 ?? ''} ${userData.billingAddress?.country ?? ''}`}</span>
-              <Button size="sm" className="ms-2">
-                Update
-              </Button>
             </Col>
           </Row>
           <hr />
           <Row className="mb-3">
             <Col md={12}>
-              <h2>Order History</h2>
+              <h2>Order History:</h2>
             </Col>
           </Row>
           <Row className="mb-3">
@@ -200,8 +215,20 @@ const UserPage = () => {
           <hr />
           <Row className="mb-3">
             <Col md={12}>
-              <h2>Payment Methods</h2>
-              <Button>Add Payment Method</Button>
+              <h2>Your Post in the Forum:</h2>
+            </Col>
+          </Row>
+          <Row className="mb-3">
+            <Col md={4} className="d-flex justify-content-start">
+              <Button variant="info" onClick={handleForumHistory}>
+                Press To View Post History
+              </Button>
+            </Col>
+          </Row>
+          <hr />
+          <Row className="mb-3">
+            <Col md={12}>
+              <h2>Payment Methods You Enter:</h2>
             </Col>
           </Row>
           {userData.paymentMethods && userData.paymentMethods.length > 0 ? (
@@ -223,7 +250,7 @@ const UserPage = () => {
           <hr />
           <Row className="mb-3">
             <Col md={12}>
-              <h2>Account Settings</h2>
+              <h2>Account Settings:</h2>
             </Col>
           </Row>
           <Row className="mb-3 align-items-center">
@@ -239,44 +266,10 @@ const UserPage = () => {
               </Button>
             </Col>
           </Row>
-          <Row className="mb-3 align-items-center">
-            <Col md={3}>
-              <strong>Two-Factor Authentication:</strong>
-            </Col>
-            <Col md={6}>
-              <span>{userData.twoFactorAuth ? 'Enabled' : 'Disabled'}</span>
-            </Col>
-            <Col md={3} className="d-flex justify-content-end">
-              <Button size="sm" onClick={handleToggleTwoFactorAuth}>
-                {userData.twoFactorAuth ? 'Turn Off' : 'Turn On'}
-              </Button>
-            </Col>
-          </Row>
           <hr />
           <Row className="mb-3">
             <Col md={12}>
-              <h2>Saved Items</h2>
-            </Col>
-          </Row>
-          {userData.savedItems && userData.savedItems.length > 0 ? (
-            userData.savedItems.map((item, index) => (
-              <Row key={index} className="mb-3 align-items-center">
-                <Col md={12}>
-                  <span>{item}</span>
-                </Col>
-              </Row>
-            ))
-          ) : (
-            <Row className="mb-3 align-items-center">
-              <Col md={12}>
-                <span>No saved items found.</span>
-              </Col>
-            </Row>
-          )}
-          <hr />
-          <Row className="mb-3">
-            <Col md={12}>
-              <h2>Product Reviews</h2>
+              <h2>Product Reviews:</h2>
             </Col>
           </Row>
           {userData.reviews && userData.reviews.length > 0 ? (
@@ -316,4 +309,4 @@ const UserPage = () => {
   );
 };
 
-export default UserPage;
+export default UserScreen;

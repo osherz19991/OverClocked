@@ -4,7 +4,7 @@ import { getDB } from '../config/db.js';
 
 const router = express.Router();
 const postsCollectionName = 'posts';
-const usersCollectionName = 'users';
+const usersCollectionName = 'accounts';
 
 // GET /api/forum/posts - Fetch all posts with pagination and search
 router.get('/posts', async (req, res) => {
@@ -33,16 +33,16 @@ router.get('/posts', async (req, res) => {
 });
 
 // POST /api/forum/posts - Create a new post
-router.post('/posts', async (req, res) => {
+router.post('/postCreate', async (req, res) => {
   try {
-    const { title, content, username } = req.body;
+    const { title, category, username,comments } = req.body;
     const db = await getDB();
     const newPost = {
       title,
-      content,
+      category,
       username,
       createdAt: new Date(),
-      comments: [],
+      comments,
     };
 
     const result = await db.collection(postsCollectionName).insertOne(newPost);
@@ -69,16 +69,15 @@ router.get('/posts/:id', async (req, res) => {
 });
 
 // POST /api/forum/posts/:id/comments - Add a comment to a post
-router.post('/posts/:id/comments', async (req, res) => {
+router.post('/posts/:id/createComment', async (req, res) => {
   try {
     const db = await getDB();
     const postId = req.params.id;
     const { username, text } = req.body;
-
     const newComment = {
       _id: new ObjectId(),
       username,
-      text,
+      content: text,
       createdAt: new Date(),
     };
 
@@ -87,11 +86,10 @@ router.post('/posts/:id/comments', async (req, res) => {
       { $push: { comments: newComment } },
       { returnOriginal: false }
     );
-
-    if (!result.value) {
+   
+    if (!result) {
       return res.status(404).json({ message: 'Post not found' });
     }
-
     // Update user's comments list
     const user = await db.collection(usersCollectionName).findOne({ username });
     if (user) {
@@ -106,8 +104,7 @@ router.post('/posts/:id/comments', async (req, res) => {
         { $set: { comments: user.comments } }
       );
     }
-
-    res.json(result.value);
+    res.json(result);
   } catch (error) {
     console.error('Error adding comment:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -128,5 +125,18 @@ router.get('/posts/:id/comments', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+router.get('/posts/user/:username', async (req, res) => {
+  try {
+    const db = await getDB();
+    const username = req.params.username;
+    const userPosts = await db.collection(postsCollectionName).find({ username }).toArray();
+    res.json(userPosts);
+  } catch (error) {
+    console.error('Error fetching user posts:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 export default router;

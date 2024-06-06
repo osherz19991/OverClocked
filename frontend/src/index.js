@@ -14,7 +14,7 @@ import HomeScreen from './Screens/HomeScreen';
 import ProductScreen from './Screens/ProductScreen';
 import SignUpScreen from './Screens/SignupScreen';
 import SigninScreen from './Screens/SigninScreen';
-import UserPage from './Screens/UserPage';
+import UserScreen from './Screens/UserScreen';
 import CartScreen from './Screens/CartScreen';
 import CheckoutScreen from './Screens/CheckoutScreen';
 import OrderHistoryScreen from './Screens/OrderHistoryScreen';
@@ -25,15 +25,17 @@ import ContactUs from './Screens/ContactUs';
 import ForumScreen from './Screens/ForumScreen';
 import AdminScreen from './Screens/AdminScreen';
 import reportWebVitals from './reportWebVitals';
+import ForumHistory from './Screens/ForumHistory';
+import PostScreen from './Screens/PostScreen';
+
 const router = createBrowserRouter(
   createRoutesFromElements(
-
     <Route path ="/" element = {<App />}>
     <Route index={true} path="/" element={<HomeScreen/>} />
     <Route path="/product/:id" element={<ProductScreen/>} />
     <Route path="/signup" element={<SignUpScreen/>} />
     <Route path="/signin" element={<SigninScreen/>} />
-    <Route path="/userInfo" element={<UserPage/>} />
+    <Route path="/userInfo" element={<UserScreen/>} />
     <Route path="/cart" element={<CartScreen/>} />
     <Route path="/checkout" element={<CheckoutScreen/>} />
     <Route path="/orderHistory" element={<OrderHistoryScreen/>} />
@@ -43,6 +45,8 @@ const router = createBrowserRouter(
     <Route path="/about-us" element={<AboutUs/>} />
     <Route path="/forum" element={<ForumScreen/>} />
     <Route path="/admin" element={<AdminScreen/>} />
+    <Route path="/Post/:id" element={<PostScreen/>} />
+    <Route path="/ForumHistory" element={<ForumHistory/>} />
     </Route>
   )
 )

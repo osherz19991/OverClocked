@@ -5,26 +5,26 @@ import { LinkContainer } from 'react-router-bootstrap';
 const styles = {
   navbar: {
     padding: '10px 0',
-    display: 'flex', // Set footer navbar as flex container
-    justifyContent: 'space-between', // Align items to the start and end of the container
-    alignItems: 'center', // Center items vertically
+    display: 'flex',
+    justifyContent: 'center', // Center the Navbar horizontally
+    alignItems: 'center',
   },
   brand: {
     display: 'flex',
     alignItems: 'center',
   },
   brandImage: {
-    marginBottom: '15px',
+    marginBottom: '0',
     marginRight: '10px',
+    width: '40px',
   },
   footerLinks: {
-    display: 'flex', // Set footer links as flex container
-    justifyContent: 'center', // Center items horizontally
-    gap: '25%',
+    display: 'flex',
+    justifyContent: 'center', // Center the quick links horizontally
+    gap: '20px',
     padding: 0,
     listStyle: 'none',
-    marginBottom: '40px',
-    marginRight: '-50%',
+    margin: '20px 0',
   },
   link: {
     color: '#fff',
@@ -32,6 +32,7 @@ const styles = {
   },
   footerText: {
     margin: 0,
+    color: '#fff',
   },
 };
 
@@ -40,28 +41,17 @@ export const Footer = () => {
     <footer>
       <Navbar className="custom-navbar" bg="dark" variant="dark" expand="lg" collapseOnSelect style={styles.navbar}>
         <Container>
-          <Navbar.Brand style={styles.brand}>
-            <LinkContainer to="/">
-              <div>
-                <img
-                  src={'/images/logo.png'}
-                  alt="OverClocked Logo"
-                  style={styles.brandImage}
-                />
-                OverClocked
-              </div>
-            </LinkContainer>
-          </Navbar.Brand>
           <Row className="w-100">
-            <Col md={6} className="text-center text-md-left">
-              <h5>Quick Links</h5>
+            <Col md={8} className="text-center"> {/* Adjusted the Col width */}
+              <h5 style={{ color: '#fff' }}>Quick Links</h5>
               <ul style={styles.footerLinks}>
                 <li><a href="/" style={styles.link}>Home</a></li>
                 <li><a href="/about-us" style={styles.link}>About Us</a></li>
                 <li><a href="/contact-us" style={styles.link}>Contact Us</a></li>
+                <li><a href="/forum" style={styles.link}>Forum</a></li>
               </ul>
             </Col>
-            <Col md={6} className="text-center text-md-right">
+            <Col md={4} className="text-center text-md-right">
               <p style={styles.footerText}>&copy; 2024 OverClocked. All rights reserved.</p>
             </Col>
           </Row>

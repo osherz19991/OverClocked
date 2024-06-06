@@ -5,6 +5,7 @@ import { FaShoppingCart, FaUser } from 'react-icons/fa';
 import { RiAdminFill } from "react-icons/ri";
 import { LinkContainer } from 'react-router-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import UserRoleChecker from './UserRoleChecker';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -13,21 +14,18 @@ const Header = () => {
   const username = localStorage.getItem('username');
 
   useEffect(() => {
-    const handleCheckUserRole = async () => {
+    const checkUserRole = async () => {
       try {
-        const response = await axios.get(`/api/userInfo/checkUserRole`, {
-          params: { username: username },
-        });
-        setUserRole(response.data);
-        console.log(response.data);
+        const role = await UserRoleChecker({ username: username });
+        setUserRole(role);
       } catch (error) {
-        console.error('Error fetching user role:', error);
+        console.error('Error checking user role:', error);
+        navigate('/');
       }
     };
-    handleCheckUserRole();
+
+    checkUserRole();
   }, []);
-
-
 
   const handleSearchInputChange = (e) => {
     setSearchInput(e.target.value);

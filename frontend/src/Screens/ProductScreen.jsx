@@ -36,14 +36,14 @@ const ProductScreen = () => {
 
   const fetchProducts = async () => {
     try {
-      const { data } = await axios.get(`/api/products?search=${product.Category}`);
-      if (product.Category === "other")
-        data = await axios.get(`/api/products?search=${product.title}`);
+      let searchQuery = product.Category;
+      const { data } = await axios.get(`/api/products?search=${searchQuery}`);
       setProducts(data.products);
     } catch (error) {
       console.error('Error fetching products:', error);
     }
   };
+  
 
   useEffect(() => {
     setUsername(localStorage.getItem('username'));
@@ -106,7 +106,7 @@ const ProductScreen = () => {
         rating,
         createdAt: new Date().toISOString(),
       };
-      await axios.post(`/api/products/${productId}/reviews`, reviewData);
+      await axios.post(`/api/products/${productId}/addReviews`, reviewData);
       fetchReviews();
       setReviewText('');
       setRating(0);
@@ -118,7 +118,7 @@ const ProductScreen = () => {
   return (
     <>
       <Link className='btn btn-light my-3' to='/'>
-        Go Back
+        Go Home
       </Link>
       <ProductDetails
         product={product}
@@ -135,6 +135,7 @@ const ProductScreen = () => {
         rating={rating}
         setRating={setRating}
         addReviewHandler={addReviewHandler}
+        username={username}
       />
     </>
   );

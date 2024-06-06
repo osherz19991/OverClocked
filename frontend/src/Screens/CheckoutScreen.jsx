@@ -178,7 +178,7 @@ const CheckoutScreen = ({ cartItems }) => {
                       <Form.Label>Expiration Date</Form.Label>
                       <Form.Control
                         type="text"
-                        placeholder="MM/YYYY"
+                        placeholder="MM/YY"
                         name="expirationDate"
                         value={paymentDetails.expirationDate}
                         onChange={handlePaymentDetailsChange}

@@ -79,6 +79,7 @@ router.post('/toggleEmailNotifications', async (req, res) => {
   }
 });
 
+/* Add Two Factor Authentication
 router.post('/toggleTwoFactorAuth', async (req, res) => {
   try {
     const { username } = req.body;
@@ -97,7 +98,7 @@ router.post('/toggleTwoFactorAuth', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
+*/
 
 router.get('/checkUserRole', async (req, res) => {
   try {

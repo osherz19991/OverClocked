@@ -1,9 +1,11 @@
+// ProductsScreen.js
+
 import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
 import { Row, Col, Button, Carousel, Card } from 'react-bootstrap';
 import { Product } from '../Components/Product';
-import Pagination from '../Components/Pagination';
+import PaginationComponent from '../Components/PaginationComponet';
 import { BsChevronRight, BsChevronLeft } from 'react-icons/bs'; // Import icons for next and previous arrows
 
 const ProductsScreen = () => {
@@ -23,7 +25,7 @@ const ProductsScreen = () => {
       try {
         const response = await axios.get(`/api/products?search=${searchQuery}&sortBy=${sortBy}&sortOrder=${sortOrder}`);
         const { data } = response;
-        setProducts(data.products);
+        setProducts(data.products || []);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -41,14 +43,20 @@ const ProductsScreen = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top of the page
   };
   
-
   const fetchSuggestedProducts = async () => {
     try {
       const response = await axios.post('/api/products/suggested', {
         username: username,
       });
-      setSuggestedProducts(response.data.products);
-    } catch (error) {
+      if(response.data.product)
+        setSuggestedProducts(response.data.products);
+      else
+      {
+        const response = await axios.get(`/api/products`);
+        const { data } = response;
+        setSuggestedProducts(data.products);
+      }
+      } catch (error) {
       console.error('Error fetching products:', error);
     }
   };
@@ -64,16 +72,14 @@ const ProductsScreen = () => {
     }
   };
 
-
-
   return (
     <div>
       <div>
         <Button variant="primary" onClick={() => handleSort('price')}>
           Sort by Price {sortBy === 'price' && (sortOrder === 'asc' ? '↑' : '↓')}
         </Button>{' '}
-        <Button variant="primary" onClick={() => handleSort('rating')}>
-          Sort by Rating {sortBy === 'rating' && (sortOrder === 'asc' ? '↑' : '↓')}
+        <Button variant="primary" onClick={() => handleSort('stars')}>
+          Sort by Rating {sortBy === 'stars' && (sortOrder === 'asc' ? '↑' : '↓')}
         </Button>
       </div>
       <Row>
@@ -84,7 +90,7 @@ const ProductsScreen = () => {
         ))}
       </Row>
       <div className="d-flex justify-content-center mt-3">
-        <Pagination productsPerPage={productsPerPage} totalProducts={products.length} paginate={paginate} />
+        <PaginationComponent currentPage={currentPage} totalPages={Math.ceil(products.length / productsPerPage)} onPageChange={paginate} />
       </div>
     
       <h2>Suggested Products For You</h2>
