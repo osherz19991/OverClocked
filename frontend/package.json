@@ -1,9 +1,9 @@
 {
-  "homepage": "https://osherz19991.github.io/overclocked",
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:5000",
+  "homepage": "https://osherz19991.github.io/overclocked",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -25,7 +25,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"  
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -46,6 +46,6 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^3.2.3"
+    "gh-pages": "^6.1.1"
   }
 }
