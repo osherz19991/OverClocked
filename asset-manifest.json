@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/overclocked.github.io/static/css/main.7b341bd0.css",
-    "main.js": "/overclocked.github.io/static/js/main.f730e978.js",
-    "static/js/453.8ab44547.chunk.js": "/overclocked.github.io/static/js/453.8ab44547.chunk.js",
-    "index.html": "/overclocked.github.io/index.html",
-    "main.7b341bd0.css.map": "/overclocked.github.io/static/css/main.7b341bd0.css.map",
-    "main.f730e978.js.map": "/overclocked.github.io/static/js/main.f730e978.js.map",
-    "453.8ab44547.chunk.js.map": "/overclocked.github.io/static/js/453.8ab44547.chunk.js.map"
+    "main.css": "/overclocked/static/css/main.7b341bd0.css",
+    "main.js": "/overclocked/static/js/main.90014bdf.js",
+    "static/js/453.8ab44547.chunk.js": "/overclocked/static/js/453.8ab44547.chunk.js",
+    "index.html": "/overclocked/index.html",
+    "main.7b341bd0.css.map": "/overclocked/static/css/main.7b341bd0.css.map",
+    "main.90014bdf.js.map": "/overclocked/static/js/main.90014bdf.js.map",
+    "453.8ab44547.chunk.js.map": "/overclocked/static/js/453.8ab44547.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7b341bd0.css",
-    "static/js/main.f730e978.js"
+    "static/js/main.90014bdf.js"
   ]
 }
