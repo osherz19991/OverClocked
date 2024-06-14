@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navbar, Container, Row, Col } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import { Link } from 'react-router-dom';
 
 const styles = {
   navbar: {
@@ -45,10 +46,26 @@ export const Footer = () => {
             <Col md={8} className="text-center"> {/* Adjusted the Col width */}
               <h5 style={{ color: '#fff' }}>Quick Links</h5>
               <ul style={styles.footerLinks}>
-                <li><a href="/" style={styles.link}>Home</a></li>
-                <li><a href="/about-us" style={styles.link}>About Us</a></li>
-                <li><a href="/contact-us" style={styles.link}>Contact Us</a></li>
-                <li><a href="/forum" style={styles.link}>Forum</a></li>
+                <li>
+                  <LinkContainer to="/">
+                    <Link style={styles.link}>Home</Link>
+                  </LinkContainer>
+                </li>
+                <li>
+                  <LinkContainer to="/about-us">
+                    <Link style={styles.link}>About Us</Link>
+                  </LinkContainer>
+                </li>
+                <li>
+                  <LinkContainer to="/contact-us">
+                    <Link style={styles.link}>Contact Us</Link>
+                  </LinkContainer>
+                </li>
+                <li>
+                  <LinkContainer to="/forum">
+                    <Link style={styles.link}>Forum</Link>
+                  </LinkContainer>
+                </li>
               </ul>
             </Col>
             <Col md={4} className="text-center text-md-right">
