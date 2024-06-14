@@ -38,7 +38,7 @@ ReactDOM.render(
           <Route path="productsScreen" element={<ProductsScreen />} />
           <Route path="password-reset" element={<PasswordReset />} />
           <Route path="contact-us" element={<ContactUs />} />
-          <Route path="about-us" element={<AboutUs />} />
+          <Route path="/overclocked/#about-us" element={<AboutUs />} />
           <Route path="forum" element={<ForumScreen />} />
           <Route path="admin" element={<AdminScreen />} />
           <Route path="post/:id" element={<PostScreen />} />
