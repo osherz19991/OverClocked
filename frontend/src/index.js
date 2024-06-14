@@ -28,21 +28,21 @@ ReactDOM.render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<HomeScreen />} />
-          <Route path="/product/:id" element={<ProductScreen />} />
-          <Route path="/signup" element={<SignUpScreen />} />
-          <Route path="/signin" element={<SigninScreen />} />
-          <Route path="/userInfo" element={<UserScreen />} />
-          <Route path="/cart" element={<CartScreen />} />
-          <Route path="/checkout" element={<CheckoutScreen />} />
-          <Route path="/orderHistory" element={<OrderHistoryScreen />} />
-          <Route path="/productsScreen" element={<ProductsScreen />} />
-          <Route path="/password-reset" element={<PasswordReset />} />
-          <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/forum" element={<ForumScreen />} />
-          <Route path="/admin" element={<AdminScreen />} />
-          <Route path="/Post/:id" element={<PostScreen />} />
-          <Route path="/ForumHistory" element={<ForumHistory />} />
+          <Route path="product/:id" element={<ProductScreen />} />
+          <Route path="signup" element={<SignUpScreen />} />
+          <Route path="signin" element={<SigninScreen />} />
+          <Route path="userInfo" element={<UserScreen />} />
+          <Route path="cart" element={<CartScreen />} />
+          <Route path="checkout" element={<CheckoutScreen />} />
+          <Route path="orderHistory" element={<OrderHistoryScreen />} />
+          <Route path="productsScreen" element={<ProductsScreen />} />
+          <Route path="password-reset" element={<PasswordReset />} />
+          <Route path="contact-us" element={<ContactUs />} />
+          <Route path="about-us" element={<AboutUs />} />
+          <Route path="forum" element={<ForumScreen />} />
+          <Route path="admin" element={<AdminScreen />} />
+          <Route path="post/:id" element={<PostScreen />} />
+          <Route path="forumHistory" element={<ForumHistory />} />
         </Route>
       </Routes>
     </HashRouter>
