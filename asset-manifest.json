@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/overclocked/static/css/main.7b341bd0.css",
-    "main.js": "/overclocked/static/js/main.494b30db.js",
+    "main.js": "/overclocked/static/js/main.633742d7.js",
     "static/js/453.8ab44547.chunk.js": "/overclocked/static/js/453.8ab44547.chunk.js",
     "index.html": "/overclocked/index.html",
     "main.7b341bd0.css.map": "/overclocked/static/css/main.7b341bd0.css.map",
-    "main.494b30db.js.map": "/overclocked/static/js/main.494b30db.js.map",
+    "main.633742d7.js.map": "/overclocked/static/js/main.633742d7.js.map",
     "453.8ab44547.chunk.js.map": "/overclocked/static/js/453.8ab44547.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7b341bd0.css",
-    "static/js/main.494b30db.js"
+    "static/js/main.633742d7.js"
   ]
 }
