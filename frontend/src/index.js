@@ -26,7 +26,7 @@ ReactDOM.render(
   <React.StrictMode>
     <HashRouter>
       <Routes>
-        <Route path="/" element={<App />}>
+        <Route path="/overclocked/#" element={<App />}>
           <Route index element={<HomeScreen />} />
           <Route path="product/:id" element={<ProductScreen />} />
           <Route path="signup" element={<SignUpScreen />} />
