@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import App from './App';
@@ -24,7 +24,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<HomeScreen />} />
@@ -45,7 +45,7 @@ ReactDOM.render(
           <Route path="/ForumHistory" element={<ForumHistory />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
