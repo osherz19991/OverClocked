@@ -26,7 +26,7 @@ ReactDOM.render(
   <React.StrictMode>
     <HashRouter>
       <Routes>
-        <Route path="/overclocked/#" element={<App />}>
+        <Route path="/" element={<App />}>
           <Route index element={<HomeScreen />} />
           <Route path="product/:id" element={<ProductScreen />} />
           <Route path="signup" element={<SignUpScreen />} />
@@ -38,7 +38,7 @@ ReactDOM.render(
           <Route path="productsScreen" element={<ProductsScreen />} />
           <Route path="password-reset" element={<PasswordReset />} />
           <Route path="contact-us" element={<ContactUs />} />
-          <Route path="/overclocked/#about-us" element={<AboutUs />} />
+          <Route path="about-us" element={<AboutUs />} />
           <Route path="forum" element={<ForumScreen />} />
           <Route path="admin" element={<AdminScreen />} />
           <Route path="post/:id" element={<PostScreen />} />
