@@ -24,7 +24,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <HashRouter basename="/overclocked">
+    <HashRouter>
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<HomeScreen />} />
