@@ -57,8 +57,8 @@ const PostScreen = () => {
         };
 
         try {
-            const response = await axios.post(`/api/forum/posts/${id}/comment`, commentData);
-            setNewComment('');
+            const response = await axios.post(`/api/forum/posts/${id}/createComment`, commentData);
+            setNewComment(commentData.content);
             setPost(response.data);
             setComments(response.data.comments);
             navigate(0);

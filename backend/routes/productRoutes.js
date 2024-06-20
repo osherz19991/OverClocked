@@ -13,35 +13,50 @@ router.get('/', async (req, res) => {
     const db = await getDB();
     const page = parseInt(req.query.page) || 1;
     const limit = 9999; // Limit products per page
-    const skip = (page - 1) * limit;
+    let skip = (page - 1) * limit; // Use let instead of const for skip variable
+
     const searchQuery = req.query.search;
     const sortField = req.query.sortBy || null;
     const sortOrder = req.query.sortOrder || null;
 
-    let filter = {};
-    if (searchQuery && searchQuery !== "Other") {
-      filter = { $text: { $search: searchQuery } };
-    } else if (searchQuery === "Other") {
-      filter = { Category: "Other" };
-    }
-
-    // Define sort criteria based on the sortField and sortOrder
     let sortCriteria = {};
+    // Define sort criteria based on the sortField and sortOrder
     if (sortField && sortOrder) {
       sortCriteria[sortField] = sortOrder === 'asc' ? 1 : -1;
     }
+    
+    let products = []; // Use let instead of const for products variable
+    let filter = {};
 
-    const products = await db.collection(productsCollectionName)
-      .find(filter)
-      .sort(sortCriteria) // Apply sorting
-      .skip(skip)
-      .limit(limit)
-      .toArray();
+    if (searchQuery && searchQuery !== "Other") {
+      filter = { $text: { $search: searchQuery } };
+      products = await db.collection(productsCollectionName)
+        .find(filter)
+        .sort(sortCriteria) // Apply sorting
+        .skip(skip)
+        .limit(limit)
+        .toArray();
+    } else if (searchQuery === "Other") {
+      filter = { Category: "Other" };
+      products = await db.collection(productsCollectionName)
+        .find(filter)
+        .sort(sortCriteria) 
+        .skip(skip)
+        .limit(limit)
+        .toArray();
+    } else {
+      products = await db.collection(productsCollectionName)
+        .find({})
+        .sort(sortCriteria) 
+        .skip(skip)
+        .limit(limit)
+        .toArray();
+    }
 
     // Count total number of documents in the collection based on the search filter
     const totalCount = await db.collection(productsCollectionName).countDocuments(filter);
     const totalPages = Math.ceil(totalCount / limit);
-
+    console.log(products);
     res.json({ products, totalPages });
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -50,18 +65,22 @@ router.get('/', async (req, res) => {
 });
 
 
+
 router.post('/suggested', async (req, res) => {
   try {
-    const { username } = req.body;
+    const { username} = req.body;
     const db = await getDB();
-
+    const limit = 24;
     const account = await db.collection(accountsCollectionName).findOne({ username: username });
     if (account && account.categories) {
       const categories = account.categories;
-      const products = await db.collection(productsCollectionName).find({ Category: { $in: categories } }).toArray();
+      const products = await db.collection(productsCollectionName).find({ Category: { $in: categories } }).limit(limit).toArray();
       res.json({ products });
     } else {
-      res.json({ message: 'No categories found for the user or user does not exist' });
+      const products = await db.collection(productsCollectionName)
+      .limit(limit)
+      .toArray();
+      res.json({ products });
     }
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -80,6 +99,29 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+router.put('/:id/update', async (req, res) => {
+  try {
+    const { title, Category, price } = req.body;
+    const db = await getDB();
+    const product = await db.collection(productsCollectionName).findOne({ _id: new ObjectId(req.params.id) });
+    
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    await db.collection(productsCollectionName).updateOne({ _id: new ObjectId(req.params.id) }, 
+    { $set: { title: title, 
+              Category: Category,
+              price: price
+     } });
+
+    res.json(product);
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 
 router.put('/:id/updateQuantity', async (req, res) => {

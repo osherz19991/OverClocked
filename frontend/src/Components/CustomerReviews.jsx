@@ -50,7 +50,7 @@ const CustomerReviews = ({
                         {!username && (
                             <p>Please <a href="/signin">sign in</a> to leave a review.</p>
                         )}
-                        {username && (
+                        {username && !hasPurchased &&(
                             <p>In order to leave a review you must purchase the product</p>
                         )}
                  

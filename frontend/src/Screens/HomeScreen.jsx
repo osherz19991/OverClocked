@@ -18,8 +18,9 @@ const HomeScreen = () => {
       const response = await axios.post('/api/products/suggested', {
         username: username,
       });
-      if(response.data.product)
+      if(response.data.products){
         setSuggestedProducts(response.data.products);
+      }
       else
       {
         const response = await axios.get(`/api/products`);

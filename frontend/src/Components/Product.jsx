@@ -19,9 +19,6 @@ export const Product = ({ product }) => {
           <Link to={`/product/${product._id}`}>
             <Card.Title as='div' ><strong>{product.title}</strong></Card.Title>
           </Link>
-      <div>
-          <Button variant="primary" style={{ position: 'absolute', bottom: '20px', right: '30px' }}>Add to Cart</Button>
-      </div>
         </Card.Body>
     </Card>
   );

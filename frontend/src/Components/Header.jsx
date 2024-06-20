@@ -33,8 +33,15 @@ const Header = () => {
 
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
-    navigate(`/productsScreen/?search=${searchInput}`);
-    setSearchInput(''); // Clear the search input
+    
+    // Check if searchInput is empty or contains only whitespace
+    if (searchInput.trim() === '') {
+      navigate(`/productsScreen/?search=amd`);
+      setSearchInput(''); // Clear the search input
+    } else {
+      navigate(`/productsScreen/?search=${searchInput.trim()}`);
+      setSearchInput(''); // Clear the search input
+    }
   };
 
   const handleUserClick = () => {

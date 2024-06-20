@@ -73,11 +73,11 @@ router.post('/posts/:id/createComment', async (req, res) => {
   try {
     const db = await getDB();
     const postId = req.params.id;
-    const { username, text } = req.body;
+    const { username, content } = req.body;
     const newComment = {
       _id: new ObjectId(),
       username,
-      content: text,
+      content: content,
       createdAt: new Date(),
     };
 
