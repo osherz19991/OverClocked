@@ -8,8 +8,8 @@
 
 Overclocked is an ecommerce site for computer related products developed using the MERN (MongoDB, Express.js, React, Node.js) stack. 
 
----
 
+---
 ### <p align="center">☄ Features ☄</p>
 
 - **User Registration:** ShopCart allows users to register as customers or sellers, enabling a tailored shopping experience.
@@ -24,6 +24,11 @@ Overclocked is an ecommerce site for computer related products developed using t
 -
 -
 
+
+---
+### <p align="center">☄ Screenshots ☄</p>
+
+
 ---
 ### <p align="center">☄ Installation ☄</p>
 
@@ -31,21 +36,22 @@ Overclocked is an ecommerce site for computer related products developed using t
 ```sh
 git clone https://github.com/osherz19991/overclocked.git
 ```
-Open 2 terminals in separate windows/tabs.
 
-Terminal 1: Setting Up Backend 
+Navigate to the root folder and install dependencies for the backend:
 ```sh
-cd backend
 npm install
-npm start
 ```
-
-Terminal 2: Setting Up Frontend
+Navigate to the frontend folder:
 ```sh
 cd frontend
 npm install
 npm start
 ```
+navigate to the backend folder:
+```sh
+npm start
+```
+
 Now, navigate to `localhost:3000` in your browser. 
 The Backend API will be running at `localhost:5000`.
 
