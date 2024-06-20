@@ -24,8 +24,9 @@ Overclocked is an ecommerce site for computer related products developed using t
 -
 -
 
+---
+### <p align="center">☄ Installation ☄</p>
 
-# Installation
 
 ```sh
 git clone https://github.com/osherz19991/overclocked.git
