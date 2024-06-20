@@ -1,63 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import {Card, Form, Button, Alert } from 'react-bootstrap';
 import axios from 'axios';
 
-const styles = {
-  signinContainer: {
-    width: '300px',
-    margin: '0 auto',
-    padding: '20px',
-    border: '1px solid #ccc',
-    borderRadius: '5px',
-    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-    backgroundColor: '#f9f9f9',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  formGroup: {
-    marginBottom: '15px',
-  },
-  input: {
-    width: 'calc(100% - 20px)',
-    padding: '8px',
-    margin: '0 auto',
-    display: 'block',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-  },
-  errorMessage: {
-    color: 'red',
-    marginBottom: '15px',
-    textAlign: 'center',
-  },
-  successMessage: {
-    color: 'green',
-    marginBottom: '15px',
-    textAlign: 'center',
-  },
-  signinButton: {
-    width: '100%',
-    padding: '10px',
-    backgroundColor: '#4CAF50',
-    color: 'white',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontSize: '16px',
-  },
-  signinButtonHover: {
-    backgroundColor: '#45a049',
-  },
-  link: {
-    color: '#007BFF',
-    textDecoration: 'none',
-    marginTop: '10px',
-    display: 'block',
-    textAlign: 'center',
-  },
-};
 
 const SigninScreen = () => {
   const [email, setEmail] = useState('');
@@ -101,61 +46,54 @@ const SigninScreen = () => {
       setResetMessage('');
     }
   };
-
   return (
-    <div style={styles.signinContainer}>
+    <Card style={{ maxWidth: '300px', margin: '0 auto', padding: '20px' }}>
       <h2>Sign In</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <div style={styles.formGroup}>
-          <label htmlFor="email">Email:</label>
-          <input
+      <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="email">
+          <Form.Label>Email:</Form.Label>
+          <Form.Control
             type="email"
-            id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            style={styles.input}
           />
-        </div>
-        <div style={styles.formGroup}>
-          <label htmlFor="password">Password:</label>
-          <input
+        </Form.Group>
+        <Form.Group controlId="password">
+          <Form.Label>Password:</Form.Label>
+          <Form.Control
             type="password"
-            id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            style={styles.input}
           />
-        </div>
-        {error && <p style={styles.errorMessage}>{error}</p>}
-        <button type="submit" style={styles.signinButton}>Sign In</button>
-      </form>
+        </Form.Group>
+        {error && <Alert variant="danger">{error}</Alert>}
+        <Button type="submit" className="mt-3">Sign In</Button>
+      </Form>
       <p>
-        Don't have an account? <Link to="/signup" style={styles.link}>Sign Up</Link>
+        Don't have an account? <Link to="/signup">Sign Up</Link>
       </p>
       <p>
-        <span onClick={() => setShowReset(!showReset)} style={styles.link}>Forgot Password?</span>
+      <button onClick={() => setShowReset(!showReset)}>Forgot Password?</button>
       </p>
       {showReset && (
-        <form onSubmit={handlePasswordReset} style={styles.form}>
-          <div style={styles.formGroup}>
-            <label htmlFor="resetEmail">Enter your email to reset password:</label>
-            <input
+        <Form onSubmit={handlePasswordReset}>
+          <Form.Group controlId="resetEmail">
+            <Form.Label>Enter your email to reset password:</Form.Label>
+            <Form.Control
               type="email"
-              id="resetEmail"
               value={resetEmail}
               onChange={(e) => setResetEmail(e.target.value)}
               required
-              style={styles.input}
             />
-          </div>
-          {resetError && <p style={styles.errorMessage}>{resetError}</p>}
-          {resetMessage && <p style={styles.successMessage}>{resetMessage}</p>}
-          <button type="submit" style={styles.signinButton}>Send Reset Link</button>
-        </form>
+          </Form.Group>
+          {resetError && <Alert variant="danger">{resetError}</Alert>}
+          {resetMessage && <Alert variant="success">{resetMessage}</Alert>}
+          <Button type="submit" className="mt-3">Send Reset Link</Button>
+        </Form>
       )}
-    </div>
+    </Card>
   );
 };
 

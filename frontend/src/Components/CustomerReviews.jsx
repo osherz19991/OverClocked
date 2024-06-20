@@ -3,6 +3,8 @@ import { Row, Col, Form, Button, ListGroup, Card } from 'react-bootstrap';
 import StarRating from './StarRating';
 import Review from './Review';
 
+// This component is used to display customer reviews for a product in ProductScreen.jsx
+
 const CustomerReviews = ({
     reviews,
     reviewText,
@@ -10,7 +12,8 @@ const CustomerReviews = ({
     rating,
     setRating,
     addReviewHandler,
-    username // Add username prop
+    hasPurchased,
+    username
 }) => {
     return (
         <Row>
@@ -19,7 +22,7 @@ const CustomerReviews = ({
                     <Card.Body>
                         <h3 className="mb-4">Customer Reviews</h3>
                         {/* Conditionally render the review form */}
-                        {username && (
+                        {username && hasPurchased && (
                             <Form onSubmit={addReviewHandler}>
                                 <Form.Group controlId='review' className="position-relative">
                                     <Form.Label>Your Review</Form.Label>
@@ -47,6 +50,7 @@ const CustomerReviews = ({
                         {!username && (
                             <p>Please <a href="/signin">sign in</a> to leave a review.</p>
                         )}
+                 
                     </Card.Body>
                 </Card>
                 <ListGroup variant='flush'>

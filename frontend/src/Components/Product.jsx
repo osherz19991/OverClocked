@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 import Rating from './Rating';
 import { Link } from 'react-router-dom';
-
+// This component is used to display products in a card format in the ProductsScreen component
 export const Product = ({ product }) => {
   return (
     <Card className="my-3 p-3 rounded" style={{ position: 'relative' }}>

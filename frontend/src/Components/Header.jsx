@@ -85,26 +85,26 @@ const Header = () => {
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto" style={{ width: '10vw' }}>
+            <Nav className="ms-auto" style={{ width: '10vw', alignItems: 'center' }}>
               <LinkContainer to="/cart">
-                <Nav.Link style={{ display: 'flex', alignItems: 'center' }}>
-                  <FaShoppingCart /> Cart
+                <Nav.Link style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
+                  <FaShoppingCart style={{ marginRight: '5px' }} /> Cart
                 </Nav.Link>
               </LinkContainer>
               {username ? (
-                <Nav.Link onClick={handleUserClick} style={{ display: 'flex', alignItems: 'center' }}>
-                  <FaUser /> {username}
+                <Nav.Link onClick={handleUserClick} style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
+                  <FaUser style={{ marginRight: '5px' }} /> {username}
                 </Nav.Link>
               ) : (
                 <LinkContainer to="/signin">
-                  <Nav.Link style={{ display: 'flex', alignItems: 'center' }}>
-                    <FaUser /> Sign In
+                  <Nav.Link style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
+                    <FaUser style={{ marginRight: '5px' }} /> Sign In
                   </Nav.Link>
                 </LinkContainer>
               )}
               {userRole === 'admin' && (
                 <Nav.Link onClick={handleAdminClick} style={{ display: 'flex', alignItems: 'center' }}>
-                  <RiAdminFill /> Admin
+                  <RiAdminFill style={{ marginRight: '5px' }} /> Admin
                 </Nav.Link>
               )}
             </Nav>

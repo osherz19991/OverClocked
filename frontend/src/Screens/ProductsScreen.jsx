@@ -17,7 +17,7 @@ const ProductsScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(12);
   const [sortBy, setSortBy] = useState('price');
-  const [sortOrder, setSortOrder] = useState('asc');
+  const [sortOrder, setSortOrder] = useState('desc');
   const username = localStorage.getItem('username');
 
   useEffect(() => {

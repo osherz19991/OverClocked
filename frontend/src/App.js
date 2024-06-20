@@ -10,14 +10,14 @@ export const App = () => {
   useEffect(() => {
     const viewportMeta = document.createElement('meta');
     viewportMeta.name = 'viewport';
-    viewportMeta.content = 'width=device-width, initial-scale=1.0'; // Adjust as needed
+    viewportMeta.content = 'width=device-width, initial-scale=1.0'; 
     document.head.appendChild(viewportMeta);
   }, []);
 
   return (
     <>
       <Header />
-      <main className="py-3" style={{ minHeight: 'calc(100vh - 162px)' }}> {/* Adjust the value of 162px according to your header and footer height */}
+      <main className="py-3" style={{ minHeight: 'calc(100vh - 162px)' }}> {}
         <Container>
           <Outlet />
         </Container>

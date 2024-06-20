@@ -81,6 +81,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+
 router.put('/:id/updateQuantity', async (req, res) => {
   try {
     const productId = req.params.id;
@@ -117,19 +118,15 @@ router.get('/:id/reviews', async (req, res) => {
 // POST /api/products/:id/reviews
 router.post('/:id/addReviews', async (req, res) => {
   try {
+   
     const db = await getDB();
     const productId = req.params.id;
     const { username, text, rating, createdAt } = req.body;
-
+    
+    
     // Create a new review object
-    const newReview = {
-      _id: new ObjectId(),
-      username,
-      text,
-      rating,
-      createdAt,
-    };
-
+    const newReview = { _id: new ObjectId(),username,text,rating,createdAt,};
+    
     // Find the product by ID and update its reviews array
     const result = await db.collection(productsCollectionName).findOneAndUpdate(
       { _id: new ObjectId(productId) },
@@ -138,7 +135,19 @@ router.post('/:id/addReviews', async (req, res) => {
     );
     const product = await db.collection(productsCollectionName).findOne({ _id: new ObjectId(productId) });
     const account = await db.collection(accountsCollectionName).findOne({ username: username });
-    const userReview = { product, newReview };
+    
+    // we need to update the stars field based on the new rating by calculating the average
+    const totalStars = product.reviews.reduce((acc, review) => acc + review.rating, 0); 
+    const newStars = totalStars / product.reviews.length;
+    console.log("total stars", totalStars);
+    console.log("new stars", newStars);
+    await db.collection(productsCollectionName).updateOne(
+      { _id:new ObjectId(productId)},
+      {  $set: {stars: newStars}
+      }
+    );
+    // Add the review to the user's account
+ const userReview = { product, newReview };
     if (account.reviews) {
       account.reviews.push(userReview);
       await db.collection(accountsCollectionName).updateOne(
@@ -151,6 +160,7 @@ router.post('/:id/addReviews', async (req, res) => {
         { $set: { reviews: [userReview] } }
       );
     }
+    
     // Send back the updated reviews array
     res.json(result.reviews);
   } catch (error) {

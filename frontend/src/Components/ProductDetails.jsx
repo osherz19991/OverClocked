@@ -19,7 +19,7 @@ const ProductDetails = ({ product, quantity, handleQuantityChange, addToCartHand
               text={
                 product.reviews && product.reviews.length > 0
                   ? `${product.reviews.length} reviews`
-                  : 'No reviews yet be the first to added one'
+                  : 'No reviews yet. Be the first to add one.'
               }
             />
           </ListGroup.Item>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Alert, Spinner } from 'react-bootstrap'; // Import Alert and Spinner from react-bootstrap
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -22,6 +22,8 @@ const CheckoutScreen = ({ cartItems }) => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
   const [paymentMethodError, setPaymentMethodError] = useState('');
   const [billingAddressError, setBillingAddressError] = useState('');
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false); // State for success alert
+  const [isProcessing, setIsProcessing] = useState(false); // State to track if checkout process is ongoing
 
   const [fieldErrors, setFieldErrors] = useState({
     cardNumber: '',
@@ -48,18 +50,12 @@ const CheckoutScreen = ({ cartItems }) => {
 
   const handlePaymentDetailsChange = (e) => {
     const { name, value } = e.target;
-    setPaymentDetails(prevState => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setPaymentDetails(prevState => ({ ...prevState, [name]: value }));
   };
 
   const handleBillingAddressChange = (e) => {
     const { name, value } = e.target;
-    setBillingAddress(prevState => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setBillingAddress(prevState => ({ ...prevState, [name]: value }));
   };
 
   const handlePaymentMethodSelect = (method) => {
@@ -76,6 +72,10 @@ const CheckoutScreen = ({ cartItems }) => {
   };
 
   const handleCheckout = async () => {
+    if (isProcessing) {
+      return; // Prevent multiple clicks while processing
+    }
+
     let errors = {};
     let hasErrors = false;
 
@@ -118,6 +118,8 @@ const CheckoutScreen = ({ cartItems }) => {
       return;
     }
 
+    setIsProcessing(true); // Start checkout process
+
     try {
       const response = await axios.post('/api/checkout', {
         username: localStorage.getItem('username'),
@@ -129,10 +131,16 @@ const CheckoutScreen = ({ cartItems }) => {
       setMessage(response.data.message);
       localStorage.setItem('totalPrice', 0);
       localStorage.removeItem('cartItems');
-      navigate('/');
+      setShowSuccessAlert(true); // Show success alert
+      setTimeout(() => {
+        setShowSuccessAlert(false); // Hide success alert after 5 seconds
+        navigate('/orderHistory'); // Redirect to order history page
+      }, 5000); // Auto-hide after 5 seconds
     } catch (error) {
       console.error('Error during checkout:', error);
       setMessage('Failed to process checkout');
+    } finally {
+      setIsProcessing(false); // Reset processing state
     }
   };
 
@@ -149,6 +157,7 @@ const CheckoutScreen = ({ cartItems }) => {
                 as="select"
                 onChange={(e) => handlePaymentMethodSelect(e.target.value)}
                 className={paymentMethodError ? 'is-invalid' : ''}
+                disabled={isProcessing} // Disable control while processing
               >
                 <option value="">Choose...</option>
                 {existingPaymentMethods.map((method, index) => (
@@ -169,6 +178,7 @@ const CheckoutScreen = ({ cartItems }) => {
                     value={paymentDetails.cardNumber}
                     onChange={handlePaymentDetailsChange}
                     className={fieldErrors.cardNumber ? 'is-invalid' : ''}
+                    disabled={isProcessing} // Disable control while processing
                   />
                   {fieldErrors.cardNumber && <div className="invalid-feedback">{fieldErrors.cardNumber}</div>}
                 </Form.Group>
@@ -183,6 +193,7 @@ const CheckoutScreen = ({ cartItems }) => {
                         value={paymentDetails.expirationDate}
                         onChange={handlePaymentDetailsChange}
                         className={fieldErrors.expirationDate ? 'is-invalid' : ''}
+                        disabled={isProcessing} // Disable control while processing
                       />
                       {fieldErrors.expirationDate && <div className="invalid-feedback">{fieldErrors.expirationDate}</div>}
                     </Form.Group>
@@ -197,6 +208,7 @@ const CheckoutScreen = ({ cartItems }) => {
                         value={paymentDetails.cvv}
                         onChange={handlePaymentDetailsChange}
                         className={fieldErrors.cvv ? 'is-invalid' : ''}
+                        disabled={isProcessing} // Disable control while processing
                       />
                       {fieldErrors.cvv && <div className="invalid-feedback">{fieldErrors.cvv}</div>}
                     </Form.Group>
@@ -208,71 +220,81 @@ const CheckoutScreen = ({ cartItems }) => {
         </Col>
         <Col md={6}>
           <h3>Billing Address</h3>
-          {billingAddress.fullName ? (
-            <>
-              <p><strong>Full Name:</strong> {billingAddress.fullName}</p>
-              <p><strong>Address Line 1:</strong> {billingAddress.addressLine1}</p>
-              {billingAddress.addressLine2 && <p><strong>Address Line 2:</strong> {billingAddress.addressLine2}</p>}
-              <p><strong>Country:</strong> {billingAddress.country}</p>
-            </>
-          ) : (
-            <Form>
-              <Form.Group controlId="fullName">
-                <Form.Label>Full Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter full name"
-                  name="fullName"
-                  value={billingAddress.fullName}
-                  onChange={handleBillingAddressChange}
-                  className={fieldErrors.fullName ? 'is-invalid' : ''}
-                />
-                {fieldErrors.fullName && <div className="invalid-feedback">{fieldErrors.fullName}</div>}
-              </Form.Group>
-              <Form.Group controlId="addressLine1">
-                <Form.Label>Address Line 1</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter address line 1"
-                  name="addressLine1"
-                  value={billingAddress.addressLine1}
-                  onChange={handleBillingAddressChange}
-                  className={fieldErrors.addressLine1 ? 'is-invalid' : ''}
-                />
-                {fieldErrors.addressLine1 && <div className="invalid-feedback">{fieldErrors.addressLine1}</div>}
-              </Form.Group>
-              <Form.Group controlId="addressLine2">
-                <Form.Label>Address Line 2 (Optional)</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter address line 2"
-                  name="addressLine2"
-                  value={billingAddress.addressLine2}
-                  onChange={handleBillingAddressChange}
-                />
-              </Form.Group>
-              <Form.Group controlId="country">
-                <Form.Label>Country</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter country"
-                  name="country"
-                  value={billingAddress.country}
-                  onChange={handleBillingAddressChange}
-                  className={fieldErrors.country ? 'is-invalid' : ''}
-                />
-                {fieldErrors.country && <div className="invalid-feedback">{fieldErrors.country}</div>}
-              </Form.Group>
-            </Form>
-          )}
+          <Form>
+            <Form.Group controlId="fullName">
+              <Form.Label>Full Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter full name"
+                name="fullName"
+                value={billingAddress.fullName}
+                onChange={handleBillingAddressChange}
+                className={fieldErrors.fullName ? 'is-invalid' : ''}
+                disabled={isProcessing} // Disable control while processing
+              />
+              {fieldErrors.fullName && <div className="invalid-feedback">{fieldErrors.fullName}</div>}
+            </Form.Group>
+            <Form.Group controlId="addressLine1">
+              <Form.Label>Address Line 1</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter address line 1"
+                name="addressLine1"
+                value={billingAddress.addressLine1}
+                onChange={handleBillingAddressChange}
+                className={fieldErrors.addressLine1 ? 'is-invalid' : ''}
+                disabled={isProcessing} // Disable control while processing
+              />
+              {fieldErrors.addressLine1 && <div className="invalid-feedback">{fieldErrors.addressLine1}</div>}
+            </Form.Group>
+            <Form.Group controlId="addressLine2">
+              <Form.Label>Address Line 2 (Optional)</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter address line 2"
+                name="addressLine2"
+                value={billingAddress.addressLine2}
+                onChange={handleBillingAddressChange}
+                disabled={isProcessing} // Disable control while processing
+              />
+            </Form.Group>
+            <Form.Group controlId="country">
+              <Form.Label>Country</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter country"
+                name="country"
+                value={billingAddress.country}
+                onChange={handleBillingAddressChange}
+                className={fieldErrors.country ? 'is-invalid' : ''}
+                disabled={isProcessing} // Disable control while processing
+              />
+              {fieldErrors.country && <div className="invalid-feedback">{fieldErrors.country}</div>}
+            </Form.Group>
+          </Form>
         </Col>
       </Row>
       <div className="text-center">
-        <Button variant="primary" onClick={handleCheckout}>Checkout</Button>
+        <Button variant="primary" onClick={handleCheckout} disabled={isProcessing}>
+          {isProcessing ? (
+            <>
+              <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+              {' '}Processing...
+            </>
+          ) : (
+            <>Checkout</>
+          )}
+        </Button>
       </div>
+      {showSuccessAlert && (
+        <Alert variant="success" className="mt-3">
+          Purchase successful! Redirecting to order history...
+        </Alert>
+      )}
       {message && <p className="mt-3 text-center">{message}</p>}
     </Container>
   );
 };
 
 export default CheckoutScreen;
+

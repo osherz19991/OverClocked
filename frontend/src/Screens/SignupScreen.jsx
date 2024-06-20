@@ -1,49 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Form, Button, Card, Alert } from 'react-bootstrap';
 import axios from 'axios';
-const styles = {
-  signupContainer: {
-    width: '300px',
-    margin: '0 auto',
-    padding: '20px',
-    border: '1px solid #ccc',
-    borderRadius: '5px',
-    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-    backgroundColor: '#f9f9f9',
-  },
-  formGroup: {
-    marginBottom: '15px',
-  },
-  input: {
-    width: 'calc(100% - 20px)',
-    padding: '8px',
-    margin: '0 auto',
-    display: 'block',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-  },
-  passwordCriteria: {
-    fontSize: '12px',
-  },
-  errorMessage: {
-    color: 'red',
-    marginBottom: '15px',
-    textAlign: 'center',
-  },
-  signupButton: {
-    width: '100%',
-    padding: '10px',
-    backgroundColor: '#4CAF50',
-    color: 'white',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontSize: '16px',
-  },
-  signupButtonHover: {
-    backgroundColor: '#45a049',
-  },
-};
+
 
 const SignupScreen = () => {
   const [username, setUsername] = useState('');
@@ -96,44 +55,37 @@ const SignupScreen = () => {
       setError(error.response.data.error); // Set error message received from the server
     }
   };
-
   return (
-    <div style={styles.signupContainer}>
+    <Card style={{ maxWidth: '300px', margin: '0 auto', padding: '20px' }}>
       <h2>Sign Up</h2>
-      <form onSubmit={handleSubmit}>
-        <div style={styles.formGroup}>
-          <label htmlFor="username">Username:</label>
-          <input
+      <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="username">
+          <Form.Label>Username:</Form.Label>
+          <Form.Control
             type="text"
-            id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
-            style={styles.input}
           />
-        </div>
-        <div style={styles.formGroup}>
-          <label htmlFor="email">Email:</label>
-          <input
+        </Form.Group>
+        <Form.Group controlId="email">
+          <Form.Label>Email:</Form.Label>
+          <Form.Control
             type="email"
-            id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            style={styles.input}
           />
-        </div>
-        <div style={styles.formGroup}>
-          <label htmlFor="password">Password:</label>
-          <input
+        </Form.Group>
+        <Form.Group controlId="password">
+          <Form.Label>Password:</Form.Label>
+          <Form.Control
             type="password"
-            id="password"
             value={password}
             onChange={handlePasswordChange}
             required
-            style={styles.input}
           />
-          <div style={styles.passwordCriteria}>
+          <div>
             <p style={{ color: passwordValidations.length ? 'green' : 'red' }}>
               {passwordValidations.length ? '✔' : '✘'} At least 8 characters
             </p>
@@ -147,16 +99,77 @@ const SignupScreen = () => {
               {passwordValidations.digit ? '✔' : '✘'} At least one digit
             </p>
           </div>
-        </div>
-        {error && <div style={styles.errorMessage}>{error}</div>} {/* Display error message if present */}
-        <button type="submit" style={styles.signupButton}>Sign Up</button>
-      </form>
+        </Form.Group>
+        {error && <Alert variant="danger">{error}</Alert>}
+        <Button type="submit">Sign Up</Button>
+      </Form>
       <p>
         Already have an account? <Link to="/signin">Sign In</Link>
       </p>
-    </div>
+    </Card>
   );
 };
+
+//   return (
+//     <div style={styles.signupContainer}>
+//       <h2>Sign Up</h2>
+//       <form onSubmit={handleSubmit}>
+//         <div style={styles.formGroup}>
+//           <label htmlFor="username">Username:</label>
+//           <input
+//             type="text"
+//             id="username"
+//             value={username}
+//             onChange={(e) => setUsername(e.target.value)}
+//             required
+//             style={styles.input}
+//           />
+//         </div>
+//         <div style={styles.formGroup}>
+//           <label htmlFor="email">Email:</label>
+//           <input
+//             type="email"
+//             id="email"
+//             value={email}
+//             onChange={(e) => setEmail(e.target.value)}
+//             required
+//             style={styles.input}
+//           />
+//         </div>
+//         <div style={styles.formGroup}>
+//           <label htmlFor="password">Password:</label>
+//           <input
+//             type="password"
+//             id="password"
+//             value={password}
+//             onChange={handlePasswordChange}
+//             required
+//             style={styles.input}
+//           />
+//           <div style={styles.passwordCriteria}>
+//             <p style={{ color: passwordValidations.length ? 'green' : 'red' }}>
+//               {passwordValidations.length ? '✔' : '✘'} At least 8 characters
+//             </p>
+//             <p style={{ color: passwordValidations.upper ? 'green' : 'red' }}>
+//               {passwordValidations.upper ? '✔' : '✘'} At least one uppercase letter
+//             </p>
+//             <p style={{ color: passwordValidations.lower ? 'green' : 'red' }}>
+//               {passwordValidations.lower ? '✔' : '✘'} At least one lowercase letter
+//             </p>
+//             <p style={{ color: passwordValidations.digit ? 'green' : 'red' }}>
+//               {passwordValidations.digit ? '✔' : '✘'} At least one digit
+//             </p>
+//           </div>
+//         </div>
+//         {error && <div style={styles.errorMessage}>{error}</div>} {/* Display error message if present */}
+//         <button type="submit" style={styles.signupButton}>Sign Up</button>
+//       </form>
+//       <p>
+//         Already have an account? <Link to="/signin">Sign In</Link>
+//       </p>
+//     </div>
+//   );
+// };
 
 
 export default SignupScreen;

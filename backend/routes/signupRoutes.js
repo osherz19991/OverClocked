@@ -3,7 +3,6 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
-import User from '../models/userModel.js'; // Import the User model
 import { getDB } from '../config/db.js';
 
 const router = express.Router();
@@ -40,9 +39,14 @@ router.post('/', async (req, res) => {
 
     const db = await getDB();
     const accountsCollectionName = 'accounts';
-    const existingAccount = await db.collection(accountsCollectionName).findOne({ mail });
+    const existingUsername = await db.collection(accountsCollectionName).findOne({ username });
+  
+    const existingEmail = await db.collection(accountsCollectionName).findOne({ mail });
 
-    if (existingAccount) {
+    if (existingUsername ) {
+      return res.status(400).json({ error: 'Username already exists' });
+    }
+    if (existingEmail ) {
       return res.status(400).json({ error: 'Email already exists' });
     }
 
@@ -64,7 +68,7 @@ router.post('/', async (req, res) => {
       from: 'overclocked.users@gmail.com',
       to: mail,
       subject: 'Registration Complete',
-      text: 'Thank you for your registration for OverClocked. We hope you will have a nice shopping experience with us.',
+      text: 'Thank you for registrating to OverClocked. We hope you will have a nice shopping experience with us.',
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -75,7 +79,12 @@ router.post('/', async (req, res) => {
       }
     });
 
-    await db.collection(accountsCollectionName).insertOne({ username, hashedPassword, mail, role: 'new', createdDate: new Date() });
+    await db.collection(accountsCollectionName). insertOne({
+       username,
+       hashedPassword, 
+       mail, 
+       role: 'new',
+        createdDate: new Date() });
 
     res.json({ message: 'Account created successfully' });
   } catch (error) {

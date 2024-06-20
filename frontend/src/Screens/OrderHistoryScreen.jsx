@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Container, Row, Col, Image, Card, Button } from 'react-bootstrap';
 
 const OrderHistoryScreen = () => {
   const [orders, setOrders] = useState([]);
-
+  const { username } = useParams();
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -20,6 +20,18 @@ const OrderHistoryScreen = () => {
 
     fetchOrders();
   }, []);
+  // useEffect(() => {
+  //   const fetchOrders = async () => {
+  //     try {
+  //       const response = await axios.get(`/api/orderHistory/${username}`);
+  //       setOrders(response.data);
+  //     } catch (error) {
+  //       console.error('Error fetching orders:', error);
+  //     }
+  //   };
+  //     fetchOrders();
+ 
+  // }, [username]);
 
   useEffect(() => {
     // Update localStorage only when orders state changes

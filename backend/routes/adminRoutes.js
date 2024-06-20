@@ -3,7 +3,6 @@ import multer from 'multer';
 import csvtojson from 'csvtojson';
 import Joi from 'joi';
 import fs from 'fs';
-import Product from '../models/productModel.js';
 import { getDB } from '../config/db.js';
 
 const router = express.Router();

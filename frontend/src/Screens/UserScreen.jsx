@@ -12,9 +12,7 @@ const UserScreen = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const navigate = useNavigate();
   const username = localStorage.getItem('username');
-  const [showPaymentForm, setShowPaymentForm] = useState(false);
-  const [paymentDetails, setPaymentDetails] = useState({ cardNumber: '' });
-  const [fieldErrors, setFieldErrors] = useState({});
+
 
   const fetchUserData = async () => {
     try {
@@ -69,7 +67,8 @@ const UserScreen = () => {
 
   const handleHistory = async () => {
     try {
-      navigate('/orderHistory');
+     // navigate(`/orderHistory/${username}`);
+      navigate('/OrderHistory');
     } catch (error) {
       console.error('Error loading order history:', error);
       // Handle error, if any

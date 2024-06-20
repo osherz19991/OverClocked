@@ -11,7 +11,7 @@ const AboutUs = () => {
                     <p>At OverClocked, we are passionate about technology and gaming. Our mission is to provide enthusiasts, gamers, and professionals with the best computer components and gaming gear available on the market.</p>
                     
                     <h4>Our Story:</h4>
-                    <p>Founded in 2020, OverClocked began as a small startup driven by a love for high-performance computing and gaming. Recognizing a gap in the market for a dedicated platform that not only sells but also educates and supports tech enthusiasts, we set out to create a one-stop shop for all things computer hardware and gaming.</p>
+                    <p></p>
                     
                     <h4>What We Offer:</h4>
                     <ul>
@@ -29,7 +29,7 @@ const AboutUs = () => {
                     </ul>
                     
                     <h4>Join the OverClocked Community:</h4>
-                    <p>We invite you to explore our site, join our forums, and connect with us on social media. Whether you're a seasoned gamer, a tech professional, or just starting your journey into the world of high-performance computing, OverClocked is here to help you achieve your goals.</p>
+                    <p>We invite you to explore our site and join our forums. Whether you're a seasoned gamer, a tech professional, or just starting your journey into the world of high-performance computing, OverClocked is here to help you achieve your goals.</p>
                     
                     <p>Thank you for choosing OverClocked. Together, let's push the limits of what's possible. <Link to="/">Go back to shopping</Link></p>
                 </Col>

@@ -115,6 +115,8 @@ router.get('/checkUserRole', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+ // logout route
 router.post('/logout', async (req, res) => {
   try {
     res.json({ message: 'Logout successful' });
@@ -123,6 +125,9 @@ router.post('/logout', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+// Password reset route
 router.post('/sendPasswordReset', async (req, res) => {
   try {
     // Extract user data from request body
@@ -167,5 +172,30 @@ router.post('/sendPasswordReset', async (req, res) => {
   }
 });
 
+
+// new route to update user info
+router.put('/updateUserInfo', async (req, res) => { 
+  try {
+    const { username, email } = req.body;
+    const db = await getDB();
+    const accountsCollectionName = 'accounts';
+    const account = await db.collection(accountsCollectionName).findOne({ username: username });
+    if (!account)
+      return res.status(401).json({ error: 'Invalid username' });
+    else {
+      if (email)
+        account.email = email;
+    
+      await db.collection(accountsCollectionName).updateOne(
+        { username: username },
+        { $set: { email: account.email} }
+      );
+      res.json(account);
+    }
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 export default router;

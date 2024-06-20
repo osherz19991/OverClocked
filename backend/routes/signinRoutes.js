@@ -2,7 +2,6 @@
 
 import express from 'express';
 import bcrypt from 'bcrypt';
-import User from '../models/userModel.js'; // Import the User model
 import { getDB } from '../config/db.js';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
@@ -46,7 +45,7 @@ router.post('/', async (req, res) => {
 router.post('/sendPasswordReset', async (req, res) => {
   try {
     // Extract user data from request body
-    const { mail, username } = req.body;
+    const { mail} = req.body;
     const db = await getDB();
     const transporter = nodemailer.createTransport({
       service: 'gmail',
