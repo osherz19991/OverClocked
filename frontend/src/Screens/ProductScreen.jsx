@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import ProductDetails from '../Components/ProductDetails.jsx';
 import CustomerReviews from '../Components/CustomerReviews.jsx';
@@ -40,25 +40,25 @@ const ProductScreen = () => {
     checkUserRole();
   }, []);
 
-  const fetchReviews = async () => {
+  const fetchReviews = useCallback(async () => {
     try {
       const { data } = await axios.get(`/api/products/${productId}/reviews`);
       setReviews(data);
     } catch (error) {
       console.error('Error fetching reviews:', error);
     }
-  };
+  }, [productId]);
 
-  const fetchProduct = async () => {
+  const fetchProduct = useCallback(async () => {
     try {
       const { data } = await axios.get(`/api/products/${productId}`);
       setProduct(data);
     } catch (error) {
       console.error('Error fetching product:', error);
     }
-  };
+  }, [productId]);
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       let searchQuery = product.Category;
       const { data } = await axios.get(`/api/products?search=${searchQuery}`);
@@ -66,20 +66,20 @@ const ProductScreen = () => {
     } catch (error) {
       console.error('Error fetching products:', error);
     }
-  };
+  }, [product.Category]);
 
   useEffect(() => {
     setUsername(localStorage.getItem('username'));
     fetchProduct();
     fetchReviews();
     setQuantity(1);
-  }, [productId]);
+  }, [fetchProduct, fetchReviews]);
 
   useEffect(() => {
     if (product && product.Category) {
       fetchProducts();
     }
-  }, [product]);
+  }, [product, fetchProducts]);
 
   useEffect(() => {
     setMessage('');
@@ -101,7 +101,7 @@ const ProductScreen = () => {
     };
 
     checkPurchaseHistory();
-  }, [product]);
+  }, );
 
   const addToCartHandler = async () => {
     try {
@@ -154,6 +154,15 @@ const ProductScreen = () => {
     setEditedProduct(product);
   };
 
+  const handleDelete = async () => {
+    try {
+      await axios.put(`/api/products/${productId}/delete`);
+      navigate('/');
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
+  };
+
   const handleSaveChanges = async () => {
     try {
       const { title, Category, price } = editedProduct;
@@ -195,6 +204,9 @@ const ProductScreen = () => {
         <div className="admin-edit-section">
           <button className="btn btn-primary" onClick={handleEdit}>
             Edit Product
+          </button>
+          <button className="btn btn-danger" onClick={handleDelete}>
+            Remove
           </button>
         </div>
       )}

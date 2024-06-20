@@ -122,6 +122,19 @@ router.put('/:id/update', async (req, res) => {
   }
 });
 
+router.put('/:id/delete', async (req, res) => {
+  try {
+    const db = await getDB();
+    const result = await db.collection(productsCollectionName).deleteOne({ _id: new ObjectId(req.params.id) });
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.status(200).json({ message: 'Product deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 
 router.put('/:id/updateQuantity', async (req, res) => {
@@ -181,8 +194,6 @@ router.post('/:id/addReviews', async (req, res) => {
     // we need to update the stars field based on the new rating by calculating the average
     const totalStars = product.reviews.reduce((acc, review) => acc + review.rating, 0); 
     const newStars = totalStars / product.reviews.length;
-    console.log("total stars", totalStars);
-    console.log("new stars", newStars);
     await db.collection(productsCollectionName).updateOne(
       { _id:new ObjectId(productId)},
       {  $set: {stars: newStars}
