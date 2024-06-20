@@ -10,9 +10,6 @@ const AboutUs = () => {
                     <h2>About Us</h2>
                     <p>At OverClocked, we are passionate about technology and gaming. Our mission is to provide enthusiasts, gamers, and professionals with the best computer components and gaming gear available on the market.</p>
                     
-                    <h4>Our Story:</h4>
-                    <p></p>
-                    
                     <h4>What We Offer:</h4>
                     <ul>
                         <li><strong>Premium Computer Components:</strong> From the latest CPUs and GPUs to motherboards, RAM, and storage solutions, we stock only the best products from top manufacturers.</li>

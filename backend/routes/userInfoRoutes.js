@@ -9,33 +9,6 @@ const router = express.Router();
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-{/*
-router.post('/uploadAvatar', upload.single('file'), async (req, res) => {
-    try {
-      const db = getDB();
-      const bucket = getGridFSBucket();
-  
-      const { originalname, buffer } = req.file;
-  
-      const uploadStream = bucket.openUploadStream(originalname);
-      uploadStream.end(buffer);
-  
-      uploadStream.on('finish', () => {
-        console.log('File uploaded successfully.');
-        res.status(200).json({ message: 'File uploaded successfully.' });
-      });
-  
-      uploadStream.on('error', (error) => {
-        console.error('Error uploading file:', error);
-        res.status(500).json({ error: 'Error uploading file.' });
-      });
-    } catch (error) {
-      console.error('Error uploading file:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  });
-
-*/} //upload photos
 
 const generateResetToken = () => {
   return crypto.randomBytes(20).toString('hex');
@@ -79,26 +52,6 @@ router.post('/toggleEmailNotifications', async (req, res) => {
   }
 });
 
-/* Add Two Factor Authentication
-router.post('/toggleTwoFactorAuth', async (req, res) => {
-  try {
-    const { username } = req.body;
-    const db = await getDB();
-    const accountsCollectionName = 'accounts';
-    const account = await db.collection(accountsCollectionName).findOne({ username: username });
-    account.toggleTwoFactorAuth = !(account.toggleTwoFactorAuth);
-    await db.collection(accountsCollectionName).updateOne(
-      { username: username },
-      { $set: { toggleTwoFactorAuth: account.toggleTwoFactorAuth } }
-    );
-    res.json(account.toggleTwoFactorAuth);
-
-  } catch (error) {
-    console.error('Error toggle Email Notifications ', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-*/
 
 router.get('/checkUserRole', async (req, res) => {
   try {
