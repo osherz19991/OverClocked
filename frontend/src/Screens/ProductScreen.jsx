@@ -32,8 +32,6 @@ const ProductScreen = () => {
         } catch (error) {
           console.error('Error checking user role:', error);
         }
-      } else {
-        alert('No username found. Redirecting to Home Page.');
       }
     };
 

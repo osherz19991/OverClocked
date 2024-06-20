@@ -67,19 +67,27 @@ router.get('/', async (req, res) => {
 
 
 router.post('/suggested', async (req, res) => {
+  const { username } = req.body;
+
   try {
-    const { username} = req.body;
     const db = await getDB();
     const limit = 24;
     const account = await db.collection(accountsCollectionName).findOne({ username: username });
+
     if (account && account.categories) {
       const categories = account.categories;
-      const products = await db.collection(productsCollectionName).find({ Category: { $in: categories } }).limit(limit).toArray();
+      const products = await db.collection(productsCollectionName)
+        .find({ Category: { $in: categories } })
+        .limit(limit)
+        .toArray();
+
       res.json({ products });
     } else {
       const products = await db.collection(productsCollectionName)
-      .limit(limit)
-      .toArray();
+        .find()
+        .limit(limit)
+        .toArray();
+
       res.json({ products });
     }
   } catch (error) {

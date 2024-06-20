@@ -6,11 +6,23 @@ const router = express.Router();
 router.post('/', async (req, res) => {
   try {
     const { username } = req.body;
-
     const db = await getDB();
     const accountsCollectionName = 'accounts';
+    
+    // Fetch account details
     const account = await db.collection(accountsCollectionName).findOne({ username: username });
-    const orders = account.orderHistory;
+    
+    // Check if account exists
+    if (!account) {
+      return res.status(404).json({ error: 'Account not found' });
+    }
+
+    if (!account.orderHistory) {
+      return res.status(404).json({ error: 'Account history not found' });
+    }
+    // Access order history if available
+    const orders = account.orderHistory || {};
+
     res.json(orders);
   } catch (error) {
     console.error('Error fetching orders:', error);
