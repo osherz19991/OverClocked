@@ -45,7 +45,7 @@ npm start
 ```
 navigate to the backend folder:
 ```sh
-cd frontend
+cd backend
 npm start
 ```
 
