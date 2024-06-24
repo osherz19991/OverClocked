@@ -59,8 +59,8 @@ router.post('/', async (req, res) => {
       port: 587,
       secure: true,
       auth: {
-        user: 'overclocked.users@gmail.com', // Your Gmail email address
-        pass: 'bumn hozy elrp uirz', // Your Gmail password
+        user: 'overclocked.users@gmail.com', 
+        pass: 'bumn hozy elrp uirz', 
       },
     });
 
