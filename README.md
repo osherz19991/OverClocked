@@ -4,6 +4,7 @@
 
 ### <p align="center">☄ About ☄</p>
 
+
 ---
 
 Overclocked is an ecommerce site for computer related products developed using the MERN (MongoDB, Express.js, React, Node.js) stack.
@@ -24,11 +25,18 @@ Overclocked is an ecommerce site for computer related products developed using t
    
 ### <p align="center">☄ Screenshots ☄</p>
 ---
+<img width="945" alt="ss1" src="https://github.com/osherz19991/overclocked/assets/72994068/09aa033c-1721-4239-b617-0007a7c72065">
+<img width="574" alt="ss2" src="https://github.com/osherz19991/overclocked/assets/72994068/aa01163a-b26d-4f39-a8e3-00c0f8bfd2d0">
+<img width="927" alt="ss3" src="https://github.com/osherz19991/overclocked/assets/72994068/5e7b4e88-5b4a-4d57-9cea-09cdedbadd72">
 
 
 ### <p align="center">☄ Installation ☄</p>
 ---
-
+Make sure you have Node.js installed-
+```sh
+https://nodejs.org/en
+```
+Clone the repository-
 ```sh
 git clone https://github.com/osherz19991/overclocked.git
 ```
@@ -37,15 +45,15 @@ Navigate to the root folder and install dependencies for the backend:
 ```sh
 npm install
 ```
+navigate to the backend folder:
+```sh
+cd backend
+npm start
+```
 Navigate to the frontend folder:
 ```sh
 cd frontend
 npm install
-npm start
-```
-navigate to the backend folder:
-```sh
-cd backend
 npm start
 ```
 
