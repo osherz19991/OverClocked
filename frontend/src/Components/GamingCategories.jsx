@@ -31,7 +31,7 @@ const GamingCategories = () => {
         <Carousel.Item>
           <Row className="justify-content-center">
             <Col md={6} lg={5}>
-              <Link to="/productsScreen/?search=keyboard">
+              <Link to="/productsScreen/?search=gaming keyboard">
                 <div className="category-item d-flex justify-content-center align-items-center">
                   <img className="d-block w-150" style={{  maxHeight: '300px', maxWidth:'800px' }} src="/images/keyboard.jpg" alt="Keyboard" />
                   <Carousel.Caption>

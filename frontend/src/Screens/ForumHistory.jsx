@@ -10,7 +10,7 @@ const UserPostHistoryPage = () => {
     useEffect(() => {
         const fetchUserPosts = async () => {
             try {
-                // Assuming you have an API endpoint to fetch user posts based on the current user's ID
+               
                 const response = await axios.get(`/api/forum/posts/user/${storedUsername}`);
                 console.log(response);
                 setPosts(response.data);

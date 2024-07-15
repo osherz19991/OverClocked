@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Row, Col, Carousel, Card } from 'react-bootstrap';
-import GamingCategories from '../Components/GamingCategories'; // Import the GamingCategories component
-import { BsChevronRight, BsChevronLeft } from 'react-icons/bs'; // Import icons for next and previous arrows
+import GamingCategories from '../Components/GamingCategories'; 
+import { BsChevronRight, BsChevronLeft } from 'react-icons/bs'; 
 
 const HomeScreen = () => {
   const [SuggestedProducts, setSuggestedProducts] = useState([]);
