@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
     let filter = {};
 
     if (searchQuery && searchQuery !== "Other") {
-      filter = { $text: { $search: searchQuery } };
+      filter = { $text : { $search: searchQuery } };
       products = await db.collection(productsCollectionName)
         .find(filter)
         .sort(sortCriteria) // Apply sorting
@@ -56,7 +56,6 @@ router.get('/', async (req, res) => {
     // Count total number of documents in the collection based on the search filter
     const totalCount = await db.collection(productsCollectionName).countDocuments(filter);
     const totalPages = Math.ceil(totalCount / limit);
-    console.log(products);
     res.json({ products, totalPages });
   } catch (error) {
     console.error('Error fetching products:', error);
