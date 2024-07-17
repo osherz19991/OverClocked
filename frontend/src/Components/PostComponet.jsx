@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Card, ListGroup } from 'react-bootstrap';
 import FormattedDate from '../Components/FormattedDate';
 

@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 
 const FormattedDate = ({ date }) => {
     const formattedDate = new Date(date).toLocaleDateString('en-GB', {
