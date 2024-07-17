@@ -15,6 +15,7 @@ import { connectDB } from './config/db.js';
 
 const app = express();
 const port = process.env.PORT || 5000;
+const MONGO_URI = process.env.MONGO_URI;
 
 app.use(express.json());
 

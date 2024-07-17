@@ -4,6 +4,7 @@ import { MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
 
 dotenv.config();
+const MONGO_URI = process.env.MONGO_URI;
 
 const mongoUrl = 'mongodb+srv://osherzafar1973:zafar1234@cluster0.ol7kukn.mongodb.net/';
 const dbName = 'final_project';
@@ -13,11 +14,11 @@ let database;
 
 export const connectDB = async () => {
   try {
-    if (!mongoUrl) {
+    if (!MONGO_URI) {
       throw new Error('MongoDB connection string is not provided.');
     }
 
-    dbClient = await MongoClient.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+    dbClient = await MongoClient.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
     console.log('Connected to MongoDB');
     database = dbClient.db(dbName);
   } catch (error) {

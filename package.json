@@ -6,7 +6,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node backend/server.js",
-    "build": "cd frontend && npm run build",
+    "build": "react-scripts build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d frontend/build",
     "client": "npm start --prefix frontend",
