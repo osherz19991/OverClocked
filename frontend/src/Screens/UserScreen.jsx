@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../axiosInstance';
+import axiosInstance from './axiosInstance';
 import { Container, Image, Row, Col, Card, Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
