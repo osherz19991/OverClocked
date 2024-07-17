@@ -9,10 +9,6 @@ const HomeScreen = () => {
   const [SuggestedProducts, setSuggestedProducts] = useState([]);
   const username = localStorage.getItem('username');
 
-  useEffect(() => {
-    fetchSuggestedProducts();
-  }, [fetchSuggestedProducts]);
-
   const fetchSuggestedProducts = async () => {
     try {
       const response = await axios.post('/api/products/suggested', {
@@ -31,6 +27,11 @@ const HomeScreen = () => {
       console.error('Error fetching products:', error);
     }
   };
+  
+  useEffect(() => {
+    fetchSuggestedProducts();
+  }, [fetchSuggestedProducts]);
+
 
   return (
     <div style={{ padding: '20px', animation: 'fadeIn 1s ease-in-out' }}>
