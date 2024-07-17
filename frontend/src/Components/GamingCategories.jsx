@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Container, Carousel, Row, Col, Button, ButtonGroup } from 'react-bootstrap';
+import { Carousel, Row, Col } from 'react-bootstrap';
 
 import { Link } from 'react-router-dom';
 

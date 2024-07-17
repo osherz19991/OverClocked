@@ -11,7 +11,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     fetchSuggestedProducts();
-  }, []);
+  }, [fetchSuggestedProducts]);
 
   const fetchSuggestedProducts = async () => {
     try {
