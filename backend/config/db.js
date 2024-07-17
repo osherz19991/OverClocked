@@ -14,11 +14,11 @@ let database;
 
 export const connectDB = async () => {
   try {
-    if (!MONGO_URI) {
+    if (!mongoUrl) {
       throw new Error('MongoDB connection string is not provided.');
     }
 
-    dbClient = await MongoClient.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    dbClient = await MongoClient.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
     console.log('Connected to MongoDB');
     database = dbClient.db(dbName);
   } catch (error) {
