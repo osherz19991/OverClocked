@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button, Card, Alert } from 'react-bootstrap';
-import axiosInstance from './axiosInstance';
+import axiosInstance from '../axiosInstance';
 
 
 const SignupScreen = () => {

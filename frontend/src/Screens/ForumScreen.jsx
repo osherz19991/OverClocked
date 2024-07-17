@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col, Card, Alert } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import axiosInstance from './axiosInstance';
+import axiosInstance from '../axiosInstance';
 import Post from '../Components/PostComponet';
 import PaginationComponent from '../Components/PaginationComponet';
 

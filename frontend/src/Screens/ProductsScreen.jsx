@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import axiosInstance from './axiosInstance';
+import axiosInstance from '../axiosInstance';
 import { Row, Col, Button, Carousel, Card } from 'react-bootstrap';
 import { Product } from '../Components/Product';
 import PaginationComponent from '../Components/PaginationComponet';

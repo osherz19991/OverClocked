@@ -4,7 +4,7 @@ import ProductDetails from '../Components/ProductDetails.jsx';
 import CustomerReviews from '../Components/CustomerReviews.jsx';
 import RelatedProductsCarousel from '../Components/RelatedProductsCarousel .jsx';
 import UserRoleChecker from '../Components/UserRoleChecker';
-import axiosInstance from './axiosInstance';
+import axiosInstance from '../axiosInstance';
 
 const ProductScreen = () => {
   const [username, setUsername] = useState('');

@@ -1,4 +1,4 @@
-import axiosInstance from './axiosInstance';
+import axiosInstance from '../axiosInstance';
 
 const UserRoleChecker = async ({ username }) => {
   try {
