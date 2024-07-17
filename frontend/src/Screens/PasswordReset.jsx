@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axiosInstance from './axiosInstance';
+import axiosInstance from '../axiosInstance';
 import { Link, useNavigate } from 'react-router-dom';
 
 const PasswordReset = () => {

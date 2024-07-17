@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col, Alert, Spinner } from 'react-bootstrap'; // Import Alert and Spinner from react-bootstrap
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from './axiosInstance';
+import axiosInstance from '../axiosInstance';
 
 const CheckoutScreen = ({ cartItems }) => {
   const navigate = useNavigate();
