@@ -16,8 +16,14 @@ import { connectDB } from './config/db.js';
 const app = express();
 const port = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
-
-app.use(express.json());
+const cors = require('cors');
+const corsOptions = {
+  origin: 'https://overclockedgaming1.netlify.app', // Replace with your frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow only specific methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allow only specific headers
+  credentials: true, // Allow cookies and authorization headers to be sent
+};
+app.use(cors(corsOptions));
 
 app.get('/', (req, res) => {
   res.send('API is running...');
