@@ -108,7 +108,7 @@ const ProductScreen = () => {
 
       const updatedQuantity = product.quantity - quantity;
 
-      await axios.put(`/api/products/${productId}/updateQuantity`, { quantity: updatedQuantity });
+      await axiosInstance.put(`/api/products/${productId}/updateQuantity`, { quantity: updatedQuantity });
 
       fetchProduct();
     } catch (error) {
@@ -154,7 +154,7 @@ const ProductScreen = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.put(`/api/products/${productId}/delete`);
+      await axiosInstance.put(`/api/products/${productId}/delete`);
       navigate('/');
     } catch (error) {
       console.error('Error deleting product:', error);
@@ -165,7 +165,7 @@ const ProductScreen = () => {
     try {
       const { title, Category, price } = editedProduct;
       const updatedProduct = { title, Category, price };
-      await axios.put(`/api/products/${productId}/update`, updatedProduct);
+      await axiosInstance.put(`/api/products/${productId}/update`, updatedProduct);
       setProduct(updatedProduct); // Update local product state with edited values
       setEditMode(false); // Exit edit mode
       navigate(0);
