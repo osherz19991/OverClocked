@@ -1,4 +1,4 @@
-﻿import axiosInstance from './axiosInstance';
+﻿import axios from 'axios';
 
 const instance = axios.create({
   baseURL: "https://overclocked.onrender.com", // Use your backend URL from environment variable
