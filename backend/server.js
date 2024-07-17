@@ -1,6 +1,7 @@
 // server.js
 
 import express from 'express';
+import cors from 'cors';
 import productRoutes from './routes/productRoutes.js';
 import signupRoutes from './routes/signupRoutes.js';
 import signinRoutes from './routes/signinRoutes.js';
@@ -16,7 +17,6 @@ import { connectDB } from './config/db.js';
 const app = express();
 const port = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
-const cors = require('cors');
 const corsOptions = {
   origin: 'https://overclockedgaming1.netlify.app', // Replace with your frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow only specific methods
