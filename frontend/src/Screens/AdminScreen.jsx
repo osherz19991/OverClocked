@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axiosInstance from '../axiosInstance'; 
+import axiosInstance from './axiosInstance'; 
 import { useNavigate } from 'react-router-dom';
 import ChartComponent from '../Components/ChartComponet';
 import { Spinner } from 'react-bootstrap';

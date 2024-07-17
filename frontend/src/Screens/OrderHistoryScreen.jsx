@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axiosInstance from '../axiosInstance';
+import axiosInstance from './axiosInstance';
 import { useParams, Link } from 'react-router-dom';
 import { Container, Row, Col, Image, Card, Button } from 'react-bootstrap';
 

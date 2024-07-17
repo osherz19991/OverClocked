@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axiosInstance from '../axiosInstance';
+import axiosInstance from './axiosInstance';
 import { Container, Card, Form, Button, Alert } from 'react-bootstrap';
 import Comment from '../Components/CommentComponet';
 import FormattedDate from '../Components/FormattedDate';

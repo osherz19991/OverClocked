@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axiosInstance from '../axiosInstance';
+import axiosInstance from './axiosInstance';
 import { Row, Col, Carousel, Card } from 'react-bootstrap';
 import GamingCategories from '../Components/GamingCategories'; 
 import { BsChevronRight, BsChevronLeft } from 'react-icons/bs'; 
