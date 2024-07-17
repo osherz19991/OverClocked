@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 import { Row, Col, Button, Carousel, Card } from 'react-bootstrap';
 import { Product } from '../Components/Product';
 import PaginationComponent from '../Components/PaginationComponet';
@@ -23,7 +23,7 @@ const ProductsScreen = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`/api/products?search=${searchQuery}&sortBy=${sortBy}&sortOrder=${sortOrder}`);
+        const response = await axiosInstance.get(`/api/products?search=${searchQuery}&sortBy=${sortBy}&sortOrder=${sortOrder}`);
         const { data } = response;
         setProducts(data.products || []);
       } catch (error) {
@@ -52,7 +52,7 @@ const ProductsScreen = () => {
         setSuggestedProducts(response.data.products);
       else
       {
-        const response = await axios.get(`/api/products`);
+        const response = await axiosInstance.get(`/api/products`);
         const { data } = response;
         setSuggestedProducts(data.products);
       }

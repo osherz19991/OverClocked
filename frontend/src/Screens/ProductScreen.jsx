@@ -4,7 +4,7 @@ import ProductDetails from '../Components/ProductDetails.jsx';
 import CustomerReviews from '../Components/CustomerReviews.jsx';
 import RelatedProductsCarousel from '../Components/RelatedProductsCarousel .jsx';
 import UserRoleChecker from '../Components/UserRoleChecker';
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 
 const ProductScreen = () => {
   const [username, setUsername] = useState('');
@@ -40,7 +40,7 @@ const ProductScreen = () => {
 
   const fetchReviews = useCallback(async () => {
     try {
-      const { data } = await axios.get(`/api/products/${productId}/reviews`);
+      const { data } = await axiosInstance.get(`/api/products/${productId}/reviews`);
       setReviews(data);
     } catch (error) {
       console.error('Error fetching reviews:', error);
@@ -49,7 +49,7 @@ const ProductScreen = () => {
 
   const fetchProduct = useCallback(async () => {
     try {
-      const { data } = await axios.get(`/api/products/${productId}`);
+      const { data } = await axiosInstance.get(`/api/products/${productId}`);
       setProduct(data);
     } catch (error) {
       console.error('Error fetching product:', error);
@@ -59,7 +59,7 @@ const ProductScreen = () => {
   const fetchProducts = useCallback(async () => {
     try {
       let searchQuery = product.Category;
-      const { data } = await axios.get(`/api/products?search=${searchQuery}`);
+      const { data } = await axiosInstance.get(`/api/products?search=${searchQuery}`);
       setProducts(data.products);
     } catch (error) {
       console.error('Error fetching products:', error);

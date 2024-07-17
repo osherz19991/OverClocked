@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from './axiosInstance'; 
 import { useNavigate } from 'react-router-dom';
 import ChartComponent from '../Components/ChartComponet';
 import { Spinner } from 'react-bootstrap';
@@ -45,7 +45,7 @@ const AdminScreen = () => {
         try {
           setLoading(true);
           const [statsRes] = await Promise.all([
-            axios.get('/api/admin')
+            axiosInstance.get('/api/admin')
           ]);
 
           setUserDistribution(statsRes.data.userDistribution);
@@ -65,7 +65,7 @@ const AdminScreen = () => {
     if (userRole === 'admin') {
       const fetchPurchases = async () => {
         try {
-          const response = await axios.get(`/api/admin/lastYear`);
+          const response = await axiosInstance.get(`/api/admin/lastYear`);
           setPurchases(response.data);
         } catch (error) {
           console.error('Error fetching purchases:', error);
@@ -77,7 +77,7 @@ const AdminScreen = () => {
 
   const handleTimeIntervalChange = async (timeInterval) => {
     try {
-      const response = await axios.get(`/api/admin/${timeInterval}`);
+      const response = await axiosInstance.get(`/api/admin/${timeInterval}`);
       setPurchases(response.data);
     } catch (error) {
       console.error('Error fetching purchases:', error);

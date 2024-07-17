@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 import Post from '../Components/PostComponet';
 import { Link } from 'react-router-dom';
 
@@ -11,7 +11,7 @@ const UserPostHistoryPage = () => {
         const fetchUserPosts = async () => {
             try {
                
-                const response = await axios.get(`/api/forum/posts/user/${storedUsername}`);
+                const response = await axiosInstance.get(`/api/forum/posts/user/${storedUsername}`);
                 console.log(response);
                 setPosts(response.data);
             } catch (error) {

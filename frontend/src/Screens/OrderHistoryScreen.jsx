@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 import { useParams, Link } from 'react-router-dom';
 import { Container, Row, Col, Image, Card, Button } from 'react-bootstrap';
 
@@ -23,7 +23,7 @@ const OrderHistoryScreen = () => {
   // useEffect(() => {
   //   const fetchOrders = async () => {
   //     try {
-  //       const response = await axios.get(`/api/orderHistory/${username}`);
+  //       const response = await axiosInstance.get(`/api/orderHistory/${username}`);
   //       setOrders(response.data);
   //     } catch (error) {
   //       console.error('Error fetching orders:', error);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 import { Container, Card, Form, Button, Alert } from 'react-bootstrap';
 import Comment from '../Components/CommentComponet';
 import FormattedDate from '../Components/FormattedDate';
@@ -28,7 +28,7 @@ const PostScreen = () => {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const response = await axios.get(`/api/forum/posts/${id}`);
+                const response = await axiosInstance.get(`/api/forum/posts/${id}`);
                 setPost(response.data);
                 setComments(response.data.comments);
             } catch (error) {

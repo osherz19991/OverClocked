@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col, Card, Alert } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 import Post from '../Components/PostComponet';
 import PaginationComponent from '../Components/PaginationComponet';
 
@@ -32,7 +32,7 @@ const ForumScreen = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get('/api/forum/posts');
+        const response = await axiosInstance.get('/api/forum/posts');
         setPosts(response.data.posts);
       } catch (error) {
         console.error('Error fetching posts:', error);

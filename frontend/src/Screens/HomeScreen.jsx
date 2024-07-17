@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 import { Row, Col, Carousel, Card } from 'react-bootstrap';
 import GamingCategories from '../Components/GamingCategories'; 
 import { BsChevronRight, BsChevronLeft } from 'react-icons/bs'; 
@@ -19,7 +19,7 @@ const HomeScreen = () => {
       }
       else
       {
-        const response = await axios.get(`/api/products`);
+        const response = await axiosInstance.get(`/api/products`);
         const { data } = response;
         setSuggestedProducts(data.products);
       }
@@ -27,7 +27,7 @@ const HomeScreen = () => {
       console.error('Error fetching products:', error);
     }
   };
-  
+
   useEffect(() => {
     fetchSuggestedProducts();
   }, [fetchSuggestedProducts]);

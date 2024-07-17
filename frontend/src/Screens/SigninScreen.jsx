@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {Card, Form, Button, Alert } from 'react-bootstrap';
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 
 
 const SigninScreen = () => {
