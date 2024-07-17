@@ -39,7 +39,7 @@ const SignupScreen = () => {
     e.preventDefault();
     try {
       // Make a POST request to the signup endpoint
-      const response = await axios.post('/api/signup', {
+      const response = await axiosInstance.post('/api/signup', {
         name: username,
         email: email,
         password: password,

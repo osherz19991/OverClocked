@@ -84,7 +84,7 @@ const ForumScreen = () => {
     };
 
     try {
-      const response = await axios.post('/api/forum/postCreate', postData);
+      const response = await axiosInstance.post('/api/forum/postCreate', postData);
       setMessage(response.data.message);
       setNewPost({ title: '', content: '', category: '' });
       setPosts(prevPosts => [response.data.post, ...prevPosts]);

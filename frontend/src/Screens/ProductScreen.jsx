@@ -87,7 +87,7 @@ const ProductScreen = () => {
     const checkPurchaseHistory = async () => {
       try {
         if (product && product._id) {
-          const response = await axios.post('/api/orderHistory', { username });
+          const response = await axiosInstance.post('/api/orderHistory', { username });
           const orderHistory = response.data;
           const cartItems = orderHistory.flatMap(order => JSON.parse(order.cartItems));
           const purchased = cartItems.some(item => item._id === product._id);
@@ -136,7 +136,7 @@ const ProductScreen = () => {
     e.preventDefault();
     try {
       const reviewData = { username, text: reviewText, rating, createdAt: new Date().toISOString() };
-      await axios.post(`/api/products/${productId}/addReviews`, reviewData);
+      await axiosInstance.post(`/api/products/${productId}/addReviews`, reviewData);
       fetchReviews();
       setReviewText('');
       setRating(0);

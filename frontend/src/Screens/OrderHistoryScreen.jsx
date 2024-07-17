@@ -9,7 +9,7 @@ const OrderHistoryScreen = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.post('/api/orderHistory', {
+        const response = await axiosInstance.post('/api/orderHistory', {
           username: localStorage.getItem('username'),
         });
         setOrders(response.data);

@@ -17,7 +17,7 @@ const SigninScreen = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/signin', {
+      const response = await axiosInstance.post('/api/signin', {
         identifier: email,
         password: password,
       });
@@ -37,7 +37,7 @@ const SigninScreen = () => {
   const handlePasswordReset = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/signin/sendPasswordReset', { mail: resetEmail });
+      const response = await axiosInstance.post('/api/signin/sendPasswordReset', { mail: resetEmail });
       setResetMessage('Password reset link sent. Please check your email.');
       setResetError('');
     } catch (error) {

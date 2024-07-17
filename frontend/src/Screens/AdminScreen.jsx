@@ -94,7 +94,7 @@ const AdminScreen = () => {
       const formData = new FormData();
       formData.append('products', selectedFile);
 
-      const response = await axios.post('/api/admin/products', formData, {
+      const response = await axiosInstance.post('/api/admin/products', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

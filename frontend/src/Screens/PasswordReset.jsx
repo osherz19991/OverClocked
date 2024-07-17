@@ -22,7 +22,7 @@ const PasswordReset = () => {
       // Send password reset request to the backend
       console.log(token);
       console.log(window.location.href);
-      await axios.post('/api/resetPassword', { token: tokenFromPathname, newPassword });
+      await axiosInstance.post('/api/resetPassword', { token: tokenFromPathname, newPassword });
       
       // Password reset successful
       alert('Password reset successful!');

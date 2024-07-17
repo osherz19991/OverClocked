@@ -45,7 +45,7 @@ const ProductsScreen = () => {
   
   const fetchSuggestedProducts = async () => {
     try {
-      const response = await axios.post('/api/products/suggested', {
+      const response = await axiosInstance.post('/api/products/suggested', {
         username: username,
       });
       if(response.data.product)

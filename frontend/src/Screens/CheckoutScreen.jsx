@@ -37,7 +37,7 @@ const CheckoutScreen = ({ cartItems }) => {
   useEffect(() => {
     const fetchPaymentMethodsAndBillingAddress = async () => {
       try {
-        const response = await axios.post('/api/checkout/paymentMethods', { username: localStorage.getItem('username') });
+        const response = await axiosInstance.post('/api/checkout/paymentMethods', { username: localStorage.getItem('username') });
         setExistingPaymentMethods(response.data.paymentMethods);
         setBillingAddress(response.data.billingAddress);
       } catch (error) {
@@ -121,7 +121,7 @@ const CheckoutScreen = ({ cartItems }) => {
     setIsProcessing(true); // Start checkout process
 
     try {
-      const response = await axios.post('/api/checkout', {
+      const response = await axiosInstance.post('/api/checkout', {
         username: localStorage.getItem('username'),
         cartItems: localStorage.getItem('cartItems'),
         totalPrice,

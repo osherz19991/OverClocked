@@ -16,7 +16,7 @@ const UserScreen = () => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.post('/api/userInfo', { username });
+      const response = await axiosInstance.post('/api/userInfo', { username });
       setUserData(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);  // Log the error details
@@ -34,7 +34,7 @@ const UserScreen = () => {
 
   const handleSendPasswordResetEmail = async () => {
     try {
-      await axios.post('/api/userInfo/sendPasswordReset', { mail: userData.mail, username: userData.username });
+      await axiosInstance.post('/api/userInfo/sendPasswordReset', { mail: userData.mail, username: userData.username });
       alert('Password reset link sent!');
     } catch (error) {
       console.error('Error sending password reset email:', error);
@@ -45,7 +45,7 @@ const UserScreen = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post('/api/userInfo/logout');
+      await axiosInstance.post('/api/userInfo/logout');
       localStorage.removeItem('username');
       navigate('/');
       navigate(0);
@@ -77,7 +77,7 @@ const UserScreen = () => {
 
   const handleToggleEmailNotifications = async () => {
     try {
-      const response = await axios.post('/api/userInfo/toggleEmailNotifications', {
+      const response = await axiosInstance.post('/api/userInfo/toggleEmailNotifications', {
         username: userData.username,
       });
       setUserData(prevUserData => ({ ...prevUserData, emailNotifications: response.data }));
@@ -89,7 +89,7 @@ const UserScreen = () => {
 
   const handleToggleTwoFactorAuth = async () => {
     try {
-      const response = await axios.post('/api/userInfo/toggleTwoFactorAuth', {
+      const response = await axiosInstance.post('/api/userInfo/toggleTwoFactorAuth', {
         username: userData.username,
       });
       setUserData(prevUserData => ({ ...prevUserData, twoFactorAuth: response.data }));
@@ -114,7 +114,7 @@ const UserScreen = () => {
       const formData = new FormData();
       formData.append('file', selectedFile);
 
-      await axios.post('/api/userInfo/uploadAvatar', formData, {
+      await axiosInstance.post('/api/userInfo/uploadAvatar', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
